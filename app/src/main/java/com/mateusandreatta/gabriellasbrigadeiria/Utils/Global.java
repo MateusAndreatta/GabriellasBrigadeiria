@@ -1,7 +1,25 @@
 package com.mateusandreatta.gabriellasbrigadeiria.Utils;
 
 public class Global {
-    
+
+    public static String translateFirebaseException(String msg){
+
+        switch (msg) {
+            case "The email address is badly formatted.":
+                return "O e-mail informado não é válido";
+            case "The given password is invalid. [ Password should be at least 6 characters ]":
+                return "Sua senha deve ter no minimo 6 caracteres";
+            case "The email address is already in use by another account.":
+                return "O e-mail informado já está em uso!";
+            case "There is no user record corresponding to this identifier. The user may have been deleted.":
+                return "Não foi encontrado usuarios com os dados informados";
+            case "The password is invalid or the user does not have a password.":
+                return "A senha informada é inválida!";
+            default:
+                return msg;
+        }
+    }
+
     public static String VerifyErroCode(String errorCode){
         // fonte: https://firebase.google.com/docs/reference/js/firebase.auth.Auth
         // fonte: https://firebase.google.com/docs/auth/admin/errors?hl=pt-br

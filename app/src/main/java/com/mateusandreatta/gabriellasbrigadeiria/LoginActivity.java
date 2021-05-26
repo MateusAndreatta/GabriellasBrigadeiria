@@ -48,18 +48,25 @@ public class LoginActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 firebaseUser = firebaseAuth.getCurrentUser();
                                 if(firebaseUser != null){
-                                    Toast.makeText(this, firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
-//                                    Toast.makeText(this, firebaseUser.getDisplayName(), Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }
                             }else{
-                                Toast.makeText(LoginActivity.this, task.getException().getMessage() != null ? task.getException().getMessage() : task.getException().toString(), Toast.LENGTH_SHORT).show();
-                                Log.e("FIREBASEAUTH","SignIn Error" +task.getException().toString());
+                                Toast.makeText(LoginActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
+                                Log.e("TAG-LoginActivity","Login Error" +task.getException().toString());
                             }
                         });
     }
 
     public void onSignUp(View view){
         startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        }
     }
 }

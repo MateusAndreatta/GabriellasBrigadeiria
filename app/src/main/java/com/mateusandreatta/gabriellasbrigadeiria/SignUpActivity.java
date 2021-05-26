@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -55,21 +56,29 @@ public class SignUpActivity extends AppCompatActivity {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(name)
-                                        .build();
+                                    .setDisplayName(name)
+                                    .build();
 
                                 user.updateProfile(profileUpdates)
-                                        .addOnCompleteListener(task1 -> {
-                                            loadingProgressBar.setVisibility(View.GONE);
-                                            Toast.makeText(SignUpActivity.this, "Usuário cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                                        });
-
+                                    .addOnCompleteListener(task1 -> {
+                                        loadingProgressBar.setVisibility(View.GONE);
+                                        Toast.makeText(SignUpActivity.this, "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                    });
                             }else{
                                 loadingProgressBar.setVisibility(View.GONE);
-                                Toast.makeText(SignUpActivity.this, task.getException().getMessage() != null ? task.getException().getMessage() : task.getException().toString(), Toast.LENGTH_SHORT).show();
-                                Log.e("FIREBASEAUTH","Create Error" +task.getException().toString());
+                                Toast.makeText(SignUpActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
+                                Log.e("TAG-SignUpActivity","Create Error" +task.getException().toString());
                             }
                         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+        }
     }
 }

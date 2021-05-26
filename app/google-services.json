@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "367301486295",
+    "project_id": "gabriellasbrigadeiria",
+    "storage_bucket": "gabriellasbrigadeiria.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367301486295:android:8ca28cbd53adcc959af292",
+        "android_client_info": {
+          "package_name": "com.mateusandreatta.gabriellasbrigadeiria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367301486295-q00gfscu7074rqbmfqi39uumatsrjg0e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjUAPcmtM2XhCTWWDG6SRRs-1kN6t6QnU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367301486295-q00gfscu7074rqbmfqi39uumatsrjg0e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

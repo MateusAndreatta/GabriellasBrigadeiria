@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -51,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
         });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
+        if(firebaseUser != null && !firebaseUser.getDisplayName().isEmpty()){
+            TextView viewById = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_title);
+            viewById.setText("Olá " + firebaseUser.getDisplayName());
+        }
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(

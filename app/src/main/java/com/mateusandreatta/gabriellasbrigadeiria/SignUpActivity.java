@@ -46,31 +46,35 @@ public class SignUpActivity extends AppCompatActivity {
         String password = editTextPassword.getText().toString();
         String name = editTextName.getText().toString();
 
-        loadingProgressBar.setVisibility(View.VISIBLE);
+        if(email.isEmpty() || password.isEmpty() || name.isEmpty()){
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+        }else{
+            loadingProgressBar.setVisibility(View.VISIBLE);
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(SignUpActivity.this,
-                        task -> {
-                            if(task.isSuccessful()){
+                    task -> {
+                        if(task.isSuccessful()){
 
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(name)
-                                    .build();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(name)
+                                .build();
 
-                                user.updateProfile(profileUpdates)
-                                    .addOnCompleteListener(task1 -> {
-                                        loadingProgressBar.setVisibility(View.GONE);
-                                        Toast.makeText(SignUpActivity.this, "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                                    });
-                            }else{
-                                loadingProgressBar.setVisibility(View.GONE);
-                                Toast.makeText(SignUpActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
-                                Log.e("TAG-SignUpActivity","Create Error" +task.getException().toString());
-                            }
-                        });
+                            user.updateProfile(profileUpdates)
+                                .addOnCompleteListener(task1 -> {
+                                    loadingProgressBar.setVisibility(View.GONE);
+                                    Toast.makeText(SignUpActivity.this, "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                });
+                        }else{
+                            loadingProgressBar.setVisibility(View.GONE);
+                            Toast.makeText(SignUpActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
+                            Log.e("TAG-SignUpActivity","Create Error" +task.getException().toString());
+                        }
+                    });
+        }
     }
 
     @Override

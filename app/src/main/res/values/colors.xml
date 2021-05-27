@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Primary -->
+    <color name="pink_400">#ec407a</color>
+    <color name="pink_400_light">#ff77a9</color>
+    <color name="pink_400_dark">#b4004e</color>
+    <!-- Secondary -->
+    <color name="pink_200">#ec407a</color>
+    <color name="pink_200_light">#ffc1e3</color>
+    <color name="pink_200_dark">#bf5f82</color>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

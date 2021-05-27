@@ -39,22 +39,26 @@ public class LoginActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
 
-        loadingProgressBar.setVisibility(View.VISIBLE);
+        if(email.isEmpty() || password.isEmpty()){
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+        }else {
+            loadingProgressBar.setVisibility(View.VISIBLE);
 
-        firebaseAuth.signInWithEmailAndPassword(email,password)
+            firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this,
-                        task -> {
-                            loadingProgressBar.setVisibility(View.GONE);
-                            if(task.isSuccessful()){
-                                firebaseUser = firebaseAuth.getCurrentUser();
-                                if(firebaseUser != null){
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                }
-                            }else{
-                                Toast.makeText(LoginActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
-                                Log.e("TAG-LoginActivity","Login Error" +task.getException().toString());
+                    task -> {
+                        loadingProgressBar.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            firebaseUser = firebaseAuth.getCurrentUser();
+                            if (firebaseUser != null) {
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             }
-                        });
+                        } else {
+                            Toast.makeText(LoginActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
+                            Log.e("TAG-LoginActivity", "Login Error" + task.getException().toString());
+                        }
+                    });
+        }
     }
 
     public void onSignUp(View view){

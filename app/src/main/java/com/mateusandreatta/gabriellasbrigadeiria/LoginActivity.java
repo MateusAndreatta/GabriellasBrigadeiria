@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = editTextPassword.getText().toString();
 
         if(email.isEmpty() || password.isEmpty()){
-            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_erro_fill_all_inputs, Toast.LENGTH_SHORT).show();
         }else {
             loadingProgressBar.setVisibility(View.VISIBLE);
 

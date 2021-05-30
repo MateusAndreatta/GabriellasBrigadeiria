@@ -4,6 +4,7 @@
     <string name="prompt_name">Nome</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>
+    <string name="action_save">Salvar</string>
     <string name="action_sign_in">Entrar</string>
     <string name="action_sign_up">Cadastrar</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -18,8 +19,14 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_logout">Sair</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_order">Pedidos</string>
+    <string name="menu_products">Produtos</string>
+    <string name="menu_statistics">Estatisticas</string>
+    <string name="menu_profile">Meu Perfil</string>
+    <string name="menu_delivery">Entregas</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="prompt_confirm_password">Confirme sua senha</string>
+    <string name="toast_info_saved_success">Informações salvas com sucesso!</string>
+    <string name="toast_erro_fill_all_inputs">Preencha todos os campos!</string>
 </resources>

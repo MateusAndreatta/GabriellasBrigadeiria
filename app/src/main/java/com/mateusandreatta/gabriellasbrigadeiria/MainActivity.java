@@ -2,9 +2,11 @@ package com.mateusandreatta.gabriellasbrigadeiria;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -20,7 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.CircleTransform;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.ActivityMainBinding;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,10 +57,7 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
 
-        if(firebaseUser != null && !firebaseUser.getDisplayName().isEmpty()){
-            TextView viewById = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_title);
-            viewById.setText("Olá " + firebaseUser.getDisplayName());
-        }
+        updateNavUser();
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -102,6 +103,24 @@ public class MainActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
+    }
+
+    public void updateNavUser(){
+        Log.i("TAG-MainActivity", "updateNavUsername called");
+
+        if(firebaseUser != null){
+            if(firebaseUser.getDisplayName() != null){
+                TextView textView = (TextView) binding.navView.getHeaderView(0).findViewById(R.id.nav_header_title);
+                textView.setText("Olá, " + firebaseUser.getDisplayName());
+                Log.i("TAG-MainActivity", "Username changed");
+            }
+            if(firebaseUser.getPhotoUrl() != null){
+                ImageView imageView = (ImageView) binding.navView.getHeaderView(0).findViewById(R.id.imageView);
+                Picasso.get().load(firebaseUser.getPhotoUrl()).transform(new CircleTransform()).placeholder(R.mipmap.ic_launcher_round).error(R.mipmap.ic_launcher_round).into(imageView);
+//            Picasso.get().load(firebaseUser.getPhotoUrl()).transform(new RoundedCornersTransformation(150,50, RoundedCornersTransformation.CornerType.ALL)).placeholder(R.mipmap.ic_launcher_round).error(R.mipmap.ic_launcher_round).into(imageView);
+                Log.i("TAG-MainActivity", "Photo changed");
+            }
         }
     }
 }

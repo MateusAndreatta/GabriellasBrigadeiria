@@ -54,7 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
         String passwordConfirm = editTextPasswordConfirm.getText().toString();
 
         if(email.isEmpty() || password.isEmpty() || name.isEmpty() || passwordConfirm.isEmpty()){
-            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_erro_fill_all_inputs, Toast.LENGTH_SHORT).show();
         }else{
             if(!passwordConfirm.equals(password)){
                 Toast.makeText(this, "As senhas não correspondem", Toast.LENGTH_SHORT).show();

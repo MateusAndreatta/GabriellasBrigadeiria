@@ -1,16 +1,16 @@
-package com.mateusandreatta.gabriellasbrigadeiria.ui.home;
+package com.mateusandreatta.gabriellasbrigadeiria.ui.order;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class OrderViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public OrderViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("Tela de pedidos");
     }
 
     public LiveData<String> getText() {

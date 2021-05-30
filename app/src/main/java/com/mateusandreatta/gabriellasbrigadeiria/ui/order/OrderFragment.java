@@ -1,4 +1,4 @@
-package com.mateusandreatta.gabriellasbrigadeiria.ui.home;
+package com.mateusandreatta.gabriellasbrigadeiria.ui.order;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,24 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.mateusandreatta.gabriellasbrigadeiria.R;
-import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentHomeBinding;
+import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentOrderBinding;
 
-public class HomeFragment extends Fragment {
+public class OrderFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
-    private FragmentHomeBinding binding;
+    private OrderViewModel orderViewModel;
+    private FragmentOrderBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        orderViewModel =
+                new ViewModelProvider(this).get(OrderViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentOrderBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        orderViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

@@ -1,13 +1,19 @@
 <resources>
     <string name="app_name">Gabriellas Brigadeiria</string>
-    <!-- Strings related to login -->
+
+    <!-- Inputs -->
     <string name="prompt_name">Nome</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>
+    <string name="prompt_confirm_password">Confirme sua senha</string>
+
+    <!-- Actions/Buttons -->
     <string name="action_save">Salvar</string>
     <string name="action_sign_in">Entrar</string>
     <string name="action_sign_up">Cadastrar</string>
     <string name="action_sign_in_short">Sign in</string>
+    <string name="action_logout">Sair</string>
+
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
@@ -17,8 +23,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Olá!</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_logout">Sair</string>
 
+    <!-- Menu -->
     <string name="menu_order">Pedidos</string>
     <string name="menu_products">Produtos</string>
     <string name="menu_statistics">Estatisticas</string>
@@ -26,7 +32,15 @@
     <string name="menu_delivery">Entregas</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="prompt_confirm_password">Confirme sua senha</string>
+
+    <!-- Toasts -->
     <string name="toast_info_saved_success">Informações salvas com sucesso!</string>
     <string name="toast_erro_fill_all_inputs">Preencha todos os campos!</string>
+
+    <!-- Firebase Exceptions -->
+    <string name="firebase_exception_email_badly_formattd">O e-mail informado não é válido</string>
+    <string name="firebase_exception_password_invalid_least_6_characters">Sua senha deve ter no minimo 6 caracteres</string>
+    <string name="firebase_exception_email_already_in_use">O e-mail informado já está em uso!</string>
+    <string name="firebase_exception_no_user_record_with_identifier">Não foi encontrado usuários com os dados informados</string>
+    <string name="firebase_exception_password_invalid">A senha informada é inválida!</string>
 </resources>

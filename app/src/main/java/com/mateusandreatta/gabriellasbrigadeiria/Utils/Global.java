@@ -1,20 +1,24 @@
 package com.mateusandreatta.gabriellasbrigadeiria.Utils;
 
+import android.content.Context;
+
+import com.mateusandreatta.gabriellasbrigadeiria.R;
+
 public class Global {
 
-    public static String translateFirebaseException(String msg){
+    public static String translateFirebaseException(Context c, String msg){
 
         switch (msg) {
             case "The email address is badly formatted.":
-                return "O e-mail informado não é válido";
+                return c.getResources().getString(R.string.firebase_exception_email_badly_formattd);
             case "The given password is invalid. [ Password should be at least 6 characters ]":
-                return "Sua senha deve ter no minimo 6 caracteres";
+                return c.getResources().getString(R.string.firebase_exception_password_invalid_least_6_characters);
             case "The email address is already in use by another account.":
-                return "O e-mail informado já está em uso!";
+                return c.getResources().getString(R.string.firebase_exception_email_already_in_use);
             case "There is no user record corresponding to this identifier. The user may have been deleted.":
-                return "Não foi encontrado usuarios com os dados informados";
+                return c.getResources().getString(R.string.firebase_exception_no_user_record_with_identifier);
             case "The password is invalid or the user does not have a password.":
-                return "A senha informada é inválida!";
+                return c.getResources().getString(R.string.firebase_exception_password_invalid);
             default:
                 return msg;
         }

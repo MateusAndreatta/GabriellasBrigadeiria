@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             }
                         } else {
-                            Toast.makeText(LoginActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(this,task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
                             Log.e("TAG-LoginActivity", "Login Error" + task.getException().toString());
                         }
                     });

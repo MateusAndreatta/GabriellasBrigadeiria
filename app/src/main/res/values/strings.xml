@@ -35,6 +35,7 @@
 
     <!-- Toasts -->
     <string name="toast_info_saved_success">Informações salvas com sucesso!</string>
+    <string name="toast_info_saved_fail">Ocorreu um erro ao salvar as informações.</string>
     <string name="toast_erro_fill_all_inputs">Preencha todos os campos!</string>
 
     <!-- Firebase Exceptions -->

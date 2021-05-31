@@ -80,7 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     });
                             }else{
                                 loadingProgressBar.setVisibility(View.GONE);
-                                Toast.makeText(SignUpActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(SignUpActivity.this, task.getException().getMessage() != null ? Global.translateFirebaseException(this, task.getException().getMessage()) : task.getException().toString(), Toast.LENGTH_LONG).show();
                                 Log.e("TAG-SignUpActivity","Create Error" +task.getException().toString());
                             }
                         });

@@ -1,4 +1,4 @@
-package com.mateusandreatta.gabriellasbrigadeiria.ui.gallery;
+package com.mateusandreatta.gabriellasbrigadeiria.ui.profile;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -24,17 +24,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mateusandreatta.gabriellasbrigadeiria.MainActivity;
 import com.mateusandreatta.gabriellasbrigadeiria.R;
-import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentGalleryBinding;
+import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentProfileBinding;
 import com.squareup.picasso.Picasso;
 
 import static android.app.Activity.RESULT_OK;
 
-public class GalleryFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
     private final String TAG = "TAG-GalleryFragment";
 
-    private GalleryViewModel galleryViewModel;
-    private FragmentGalleryBinding binding;
+    private ProfileViewModel profileViewModel;
+    private FragmentProfileBinding binding;
 
     StorageReference storageReference;
     FirebaseUser firebaseUser;
@@ -44,9 +44,9 @@ public class GalleryFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         loadingProgressBar = binding.loading;
@@ -65,7 +65,7 @@ public class GalleryFragment extends Fragment {
         binding.imageViewUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePicker.with(GalleryFragment.this)
+                ImagePicker.with(ProfileFragment.this)
                         .cropSquare()  			//Crop image(Optional), Check Customization for more option
                         .compress(1024)			//Final image size will be less than 1 MB(Optional)
                         .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
@@ -125,6 +125,7 @@ public class GalleryFragment extends Fragment {
                 .addOnCompleteListener(task1 -> {
                     Log.d(TAG, "updateFirebaseUser - completou");
                     loadingProgressBar.setVisibility(View.GONE);
+                    imageUri = null;
                     if(task1.isSuccessful()){
                         Log.d(TAG, "sucesso");
                         ((MainActivity) getActivity()).updateNavUser();

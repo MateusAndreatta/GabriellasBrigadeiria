@@ -58,7 +58,7 @@ public class ProfileFragment extends Fragment {
         if(firebaseUser != null){
             binding.editTextUserName.setText(firebaseUser.getDisplayName() != null ? firebaseUser.getDisplayName() : "");
             if(firebaseUser.getPhotoUrl() != null){
-                Picasso.get().load(firebaseUser.getPhotoUrl()).placeholder(R.mipmap.ic_launcher_round).error(R.mipmap.ic_launcher_round).into(binding.imageViewUserProfile);
+                Picasso.get().load(firebaseUser.getPhotoUrl()).error(R.mipmap.ic_launcher_round).into(binding.imageViewUserProfile);
             }
         }
 

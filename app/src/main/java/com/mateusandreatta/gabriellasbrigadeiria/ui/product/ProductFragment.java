@@ -1,4 +1,4 @@
-package com.mateusandreatta.gabriellasbrigadeiria.ui.slideshow;
+package com.mateusandreatta.gabriellasbrigadeiria.ui.product;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,24 +12,25 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.mateusandreatta.gabriellasbrigadeiria.R;
-import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentSlideshowBinding;
+import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentProductBinding;
 
-public class SlideshowFragment extends Fragment {
+public class ProductFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
-    private FragmentSlideshowBinding binding;
+    private final String TAG = "TAG-SlideshowFragment";
+
+    private ProductViewModel productViewModel;
+    private FragmentProductBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        productViewModel =
+                new ViewModelProvider(this).get(ProductViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentProductBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        productViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

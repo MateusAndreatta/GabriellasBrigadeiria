@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.mateusandreatta.gabriellasbrigadeiria.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_product"
+        android:name="com.mateusandreatta.gabriellasbrigadeiria.ui.product.ProductFragment"
+        android:label="@string/menu_products"
+        tools:layout="@layout/fragment_product" />
 </navigation>

@@ -31,7 +31,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
-    private final String TAG = "TAG-GalleryFragment";
+    private final String TAG = "TAG-ProfileFragment";
 
     private ProfileViewModel profileViewModel;
     private FragmentProfileBinding binding;
@@ -135,26 +135,6 @@ public class ProfileFragment extends Fragment {
                         Toast.makeText(getActivity(), R.string.toast_info_saved_fail, Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    public void onSaveButtonClick(View view){
-
-        String name = binding.editTextUserName.getText().toString();
-
-        if(!name.isEmpty()){
-
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .build();
-
-            firebaseUser.updateProfile(profileUpdates)
-                    .addOnCompleteListener(task1 -> {
-
-                    });
-        }else{
-//            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     private UploadTask uploadImageToFirebase(Uri imageUri){

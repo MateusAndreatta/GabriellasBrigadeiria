@@ -1,14 +1,14 @@
-package com.mateusandreatta.gabriellasbrigadeiria.ui.slideshow;
+package com.mateusandreatta.gabriellasbrigadeiria.ui.product;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class ProductViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public ProductViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is slideshow fragment");
     }

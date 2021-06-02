@@ -1,10 +1,14 @@
 package com.mateusandreatta.gabriellasbrigadeiria.model;
 
+import com.google.firebase.firestore.DocumentId;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Order {
 
+    @DocumentId
+    private String firestoreId;
     private ArrayList<Product> products;
     private Client client;
     private String status;
@@ -79,5 +83,13 @@ public class Order {
 
     public void setDeliveryTime(String deliveryTime) {
         this.deliveryTime = deliveryTime;
+    }
+
+    public String getFirestoreId() {
+        return firestoreId;
+    }
+
+    public void setFirestoreId(String firestoreId) {
+        this.firestoreId = firestoreId;
     }
 }

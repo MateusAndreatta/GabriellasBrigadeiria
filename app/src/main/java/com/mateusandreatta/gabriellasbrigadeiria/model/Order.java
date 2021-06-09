@@ -11,9 +11,10 @@ public class Order {
     private String firestoreId;
     private ArrayList<Product> products;
     private Client client;
-    private String status;
+    private String status; /* Concluido/Em Andamento */
     private String details;
     private Double total;
+    private Double deliveryFee;
     private Date data;
     private String deliveryTime;
     private boolean enable = true;
@@ -91,5 +92,13 @@ public class Order {
 
     public void setFirestoreId(String firestoreId) {
         this.firestoreId = firestoreId;
+    }
+
+    public Double getDeliveryFee() {
+        return deliveryFee;
+    }
+
+    public void setDeliveryFee(Double deliveryFee) {
+        this.deliveryFee = deliveryFee;
     }
 }

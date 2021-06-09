@@ -10,9 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GabriellasBrigadeiria">
         <activity
+            android:name=".NewOrderActivity"
+            android:label="@string/title_activity_new_order" />
+        <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/Theme.GabriellasBrigadeiria.NoActionBar"></activity>
+            android:theme="@style/Theme.GabriellasBrigadeiria.NoActionBar" />
         <activity android:name=".SignUpActivity" />
         <activity
             android:name=".LoginActivity"

@@ -1,12 +1,10 @@
 package com.mateusandreatta.gabriellasbrigadeiria.ui.product;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -17,18 +15,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mateusandreatta.gabriellasbrigadeiria.R;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentProductBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -101,7 +92,7 @@ public class ProductFragment extends Fragment {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         final View view = getLayoutInflater().inflate(R.layout.add_product_layout, null);
         EditText editTextProductName = (EditText) view.findViewById(R.id.editTextProductName);
-        EditText editTextProductPrice = (EditText) view.findViewById(R.id.editTextProductPrice);
+        EditText editTextProductPrice = (EditText) view.findViewById(R.id.editTextDeliveryFee);
         alert.setTitle("Cadastrar produto");
         alert.setMessage("Insira o nome e o preço do produto");
 

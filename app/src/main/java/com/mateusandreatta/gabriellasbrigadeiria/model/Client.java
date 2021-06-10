@@ -3,6 +3,7 @@ package com.mateusandreatta.gabriellasbrigadeiria.model;
 public class Client {
     private String name;
     private String address;
+    private String addressDetails;
     private String phone;
 
     public Client() {
@@ -17,9 +18,10 @@ public class Client {
         this.phone = phone;
     }
 
-    public Client(String name, String address, String phone) {
+    public Client(String name, String address, String addressDetails, String phone) {
         this.name = name;
         this.address = address;
+        this.addressDetails = addressDetails;
         this.phone = phone;
     }
 
@@ -45,5 +47,13 @@ public class Client {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAddressDetails() {
+        return addressDetails;
+    }
+
+    public void setAddressDetails(String addressDetails) {
+        this.addressDetails = addressDetails;
     }
 }

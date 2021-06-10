@@ -15,9 +15,10 @@ public class Order {
     private String details;
     private Double total;
     private Double deliveryFee;
-    private Date data;
+    private Date date;
     private String deliveryTime;
     private boolean enable = true;
+    private boolean delivery;
 
     public Order() {
     }
@@ -70,12 +71,12 @@ public class Order {
         this.enable = enable;
     }
 
-    public Date getData() {
-        return data;
+    public Date getDate() {
+        return date;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getDeliveryTime() {
@@ -101,4 +102,13 @@ public class Order {
     public void setDeliveryFee(Double deliveryFee) {
         this.deliveryFee = deliveryFee;
     }
+
+    public boolean isDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(boolean delivery) {
+        this.delivery = delivery;
+    }
+
 }

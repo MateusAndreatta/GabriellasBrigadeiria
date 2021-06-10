@@ -50,6 +50,17 @@ public class Product {
 
     @Override
     public String toString() {
-        return name + " - " + "R$ " + price;
+
+        String priceString = String.valueOf(price);
+        priceString = priceString.replace(".", ",");
+        String[] split = priceString.split(",");
+
+        if(split.length > 0){
+            if(split[1].length() == 1){
+                priceString += "0";
+            }
+        }
+
+        return name + " - " + "R$ " + priceString;
     }
 }

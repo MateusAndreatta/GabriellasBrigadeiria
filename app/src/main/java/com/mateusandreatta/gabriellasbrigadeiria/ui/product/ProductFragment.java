@@ -23,6 +23,8 @@ import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
 
 import java.util.ArrayList;
 
+//TODO: Remover produto
+
 public class ProductFragment extends Fragment {
 
     private final String TAG = "TAG-SlideshowFragment";

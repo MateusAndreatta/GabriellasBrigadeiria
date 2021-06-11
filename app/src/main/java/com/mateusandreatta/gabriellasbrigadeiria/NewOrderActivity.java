@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -28,7 +29,6 @@ import com.mateusandreatta.gabriellasbrigadeiria.ui.newOrder.NewOrderInfoFragmen
 import com.mateusandreatta.gabriellasbrigadeiria.ui.newOrder.NewOrderViewModel;
 import com.mateusandreatta.gabriellasbrigadeiria.ui.newOrder.SectionsPagerAdapter;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,7 +92,9 @@ public class NewOrderActivity extends AppCompatActivity {
 
     public void saveOrderClick(View view){
         ProgressBar progressBar = binding.getRoot().findViewById(R.id.progressBar);
+        Button btn = binding.getRoot().findViewById(R.id.buttonSaveOrder);
         progressBar.setVisibility(View.VISIBLE);
+        btn.setEnabled(false);
         try{
             Order order = getOrder();
 
@@ -100,18 +102,21 @@ public class NewOrderActivity extends AppCompatActivity {
                     .add(order)
                     .addOnSuccessListener(documentReference -> {
                         progressBar.setVisibility(View.GONE);
+                        btn.setEnabled(true);
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         Toast.makeText(this, "Pedido adicionado com sucesso", Toast.LENGTH_SHORT).show();
+                        finish();
                     })
                     .addOnFailureListener(e -> {
                         progressBar.setVisibility(View.GONE);
+                        btn.setEnabled(true);
                         Log.w(TAG, "Error adding document", e);
                         Toast.makeText(this, "Erro ao adicionar o pedido", Toast.LENGTH_SHORT).show();
                     });
 
         }catch (Exception ex){
             progressBar.setVisibility(View.GONE);
-
+            btn.setEnabled(true);
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
 
@@ -140,7 +145,7 @@ public class NewOrderActivity extends AppCompatActivity {
         EditText orderTime = binding.getRoot().findViewById(R.id.editTextOrderTime);
         EditText deliveryFee = binding.getRoot().findViewById(R.id.editTextDeliveryFee);
         CheckBox checkboxDelivery = binding.getRoot().findViewById(R.id.checkBox);
-        ListView listViewProducts = binding.getRoot().findViewById(R.id.listViewProducts);
+        ListView listViewProducts = binding.getRoot().findViewById(R.id.listViewOrderProducts);
 
         boolean delivery = !checkboxDelivery.isChecked();
 
@@ -174,7 +179,7 @@ public class NewOrderActivity extends AppCompatActivity {
         order.setDate(date);
         order.setDeliveryTime(orderTime.getText().toString());
         order.setDetails(orderDetails.getText().toString());
-        order.setProducts(products);
+        order.setProducts(productsInOrder);
 
         if(!delivery){
             deliveryFeeValue = 0d;

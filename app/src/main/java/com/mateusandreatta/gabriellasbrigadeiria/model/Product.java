@@ -1,6 +1,7 @@
 package com.mateusandreatta.gabriellasbrigadeiria.model;
 
 import com.google.firebase.firestore.DocumentId;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 
 public class Product {
 
@@ -50,17 +51,6 @@ public class Product {
 
     @Override
     public String toString() {
-
-        String priceString = String.valueOf(price);
-        priceString = priceString.replace(".", ",");
-        String[] split = priceString.split(",");
-
-        if(split.length > 0){
-            if(split[1].length() == 1){
-                priceString += "0";
-            }
-        }
-
-        return name + " - " + "R$ " + priceString;
+        return name + " - " + Global.formatCurrencyDoubleValue(price);
     }
 }

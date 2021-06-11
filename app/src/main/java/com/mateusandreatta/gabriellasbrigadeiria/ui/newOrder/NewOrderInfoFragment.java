@@ -43,7 +43,7 @@ public class NewOrderInfoFragment extends Fragment {
         Log.i(TAG,"onCreateView" );
         newOrderViewModel = new ViewModelProvider(requireActivity()).get(NewOrderViewModel.class);
         spinner = root.findViewById(R.id.spinnerProducts);
-        listView = root.findViewById(R.id.listViewProducts);
+        listView = root.findViewById(R.id.listViewOrderProducts);
         spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
         listViewAdapter =  new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<>());
         spinner.setAdapter(spinnerAdapter);

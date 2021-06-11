@@ -2,10 +2,11 @@ package com.mateusandreatta.gabriellasbrigadeiria.model;
 
 import com.google.firebase.firestore.DocumentId;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Order {
+public class Order implements Serializable {
 
     @DocumentId
     private String firestoreId;

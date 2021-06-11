@@ -3,7 +3,9 @@ package com.mateusandreatta.gabriellasbrigadeiria.model;
 import com.google.firebase.firestore.DocumentId;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
 
     @DocumentId
     String firestoreId;

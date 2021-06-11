@@ -6,17 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mateusandreatta.gabriellasbrigadeiria.R;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
+import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,13 +39,14 @@ public class NewOrderInfoFragment extends Fragment {
     private ArrayAdapter<Product> spinnerAdapter;
     private ArrayAdapter<Product> listViewAdapter;
     private ListView listView;
+    private View root;
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_new_order_tab_info, container, false);
+        root = inflater.inflate(R.layout.fragment_new_order_tab_info, container, false);
         Log.i(TAG,"onCreateView" );
         newOrderViewModel = new ViewModelProvider(requireActivity()).get(NewOrderViewModel.class);
         spinner = root.findViewById(R.id.spinnerProducts);
@@ -74,6 +81,16 @@ public class NewOrderInfoFragment extends Fragment {
             spinnerAdapter.addAll(products);
             spinnerAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
         });
+
+        newOrderViewModel.getEditOrder().observe(getViewLifecycleOwner(), order -> {
+            try {
+                getOldOrderData(order);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Ocorreu um erro, tente novamente mais tarde.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
@@ -110,6 +127,19 @@ public class NewOrderInfoFragment extends Fragment {
         });
 
         alert.show();
+    }
+
+    private void getOldOrderData(Order orderEdit) throws Exception {
+
+        EditText orderDetails = root.findViewById(R.id.editTextDetails);
+        EditText orderDate = root.findViewById(R.id.editTextOrderDate);
+        EditText orderTime = root.findViewById(R.id.editTextOrderTime);
+
+        orderDetails.setText(orderEdit.getDetails());
+        orderDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(orderEdit.getDate()));
+        orderTime.setText(orderEdit.getDeliveryTime());
+        listViewAdapter.addAll(orderEdit.getProducts());
+
     }
 
 }

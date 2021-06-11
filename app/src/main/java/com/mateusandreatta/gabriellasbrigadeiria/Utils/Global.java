@@ -33,6 +33,9 @@ public class Global {
             if(split[1].length() == 1){
                 priceString += "0";
             }
+            if(split[1].length() > 2){
+                priceString = split[0] + ","+ split[1].substring(0,2);
+            }
         }
         return "R$ " + priceString;
     }

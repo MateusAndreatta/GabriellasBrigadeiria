@@ -19,6 +19,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.ActivityNewOrderBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Client;
@@ -41,8 +42,9 @@ public class NewOrderActivity extends AppCompatActivity {
     private ActivityNewOrderBinding binding;
     private FirebaseFirestore db;
     private ArrayList<Product> products = new ArrayList<>();
-    private NewOrderInfoFragment newOrderInfoFragment;
-    private NewOrderClientFragment newOrderClientFragment;
+    private boolean edit;
+    private Order orderEdit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,8 @@ public class NewOrderActivity extends AppCompatActivity {
         binding = ActivityNewOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
-        getSupportActionBar().setHomeButtonEnabled(true);      //Ativar o botão
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.menu_new_order));
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
@@ -62,6 +64,13 @@ public class NewOrderActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
 
         newOrderViewModel = new ViewModelProvider(this).get(NewOrderViewModel.class);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            orderEdit = (Order) getIntent().getSerializableExtra("order");
+            edit = true;
+            newOrderViewModel.setmEditOrder(orderEdit);
+        }
 
         db = FirebaseFirestore.getInstance();
         loadProducts();
@@ -89,7 +98,6 @@ public class NewOrderActivity extends AppCompatActivity {
         newOrderViewModel.setProducts(products);
     }
 
-
     public void saveOrderClick(View view){
         ProgressBar progressBar = binding.getRoot().findViewById(R.id.progressBar);
         Button btn = binding.getRoot().findViewById(R.id.buttonSaveOrder);
@@ -98,21 +106,38 @@ public class NewOrderActivity extends AppCompatActivity {
         try{
             Order order = getOrder();
 
-            db.collection("orders")
-                    .add(order)
-                    .addOnSuccessListener(documentReference -> {
-                        progressBar.setVisibility(View.GONE);
-                        btn.setEnabled(true);
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                        Toast.makeText(this, "Pedido adicionado com sucesso", Toast.LENGTH_SHORT).show();
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        progressBar.setVisibility(View.GONE);
-                        btn.setEnabled(true);
-                        Log.w(TAG, "Error adding document", e);
-                        Toast.makeText(this, "Erro ao adicionar o pedido", Toast.LENGTH_SHORT).show();
-                    });
+            if(!edit){
+                db.collection("orders")
+                        .add(order)
+                        .addOnSuccessListener(documentReference -> {
+                            progressBar.setVisibility(View.GONE);
+                            btn.setEnabled(true);
+                            Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                            Toast.makeText(this, "Pedido adicionado com sucesso", Toast.LENGTH_SHORT).show();
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            progressBar.setVisibility(View.GONE);
+                            btn.setEnabled(true);
+                            Log.w(TAG, "Error adding document", e);
+                            Toast.makeText(this, "Erro ao adicionar o pedido", Toast.LENGTH_SHORT).show();
+                        });
+            }else{
+                db.collection("orders").document(order.getFirestoreId())
+                        .set(order).addOnCompleteListener(task -> {
+                           if(task.isSuccessful()){
+                               progressBar.setVisibility(View.GONE);
+                               btn.setEnabled(true);
+                               Toast.makeText(this, "Pedido editado com sucesso", Toast.LENGTH_SHORT).show();
+                               finish();
+                           }else{
+                               progressBar.setVisibility(View.GONE);
+                               btn.setEnabled(true);
+                               Toast.makeText(this, "Erro ao editar o pedido", Toast.LENGTH_SHORT).show();
+                           }
+                        });
+
+            }
 
         }catch (Exception ex){
             progressBar.setVisibility(View.GONE);
@@ -166,7 +191,12 @@ public class NewOrderActivity extends AppCompatActivity {
 
         Double deliveryFeeValue = 0d;
         if(!deliveryFee.getText().toString().isEmpty()){
-            deliveryFeeValue = Double.valueOf(deliveryFee.getText().toString());
+            String s = deliveryFee.getText().toString();
+            if(s.contains("R$ ")){
+                s = s.replace("R$ ", "");
+                s = s.replace(",",".");
+            }
+            deliveryFeeValue = Double.valueOf(s);
         }
 
         if(orderDate.getText().toString().isEmpty()){
@@ -175,7 +205,6 @@ public class NewOrderActivity extends AppCompatActivity {
 
         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(orderDate.getText().toString());
 
-        order.setDetails(orderDetails.getText().toString());
         order.setDate(date);
         order.setDeliveryTime(orderTime.getText().toString());
         order.setDetails(orderDetails.getText().toString());
@@ -190,7 +219,14 @@ public class NewOrderActivity extends AppCompatActivity {
 
 
         order.setEnable(true);
-        order.setStatus(Status.EM_ANDAMENTO);
+        if(!edit || orderEdit.getStatus() == null)
+            order.setStatus(Status.EM_ANDAMENTO);
+        else
+            order.setStatus(orderEdit.getStatus());
+
+        if(edit)
+            order.setFirestoreId(orderEdit.getFirestoreId());
+
         return order;
     }
 

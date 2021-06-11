@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -58,10 +60,43 @@ public class OrderFragment extends Fragment {
         adapter.setClickListener(new OrdersArrayAdapter.ClickListener() {
             @Override
             public void onItemClick(int position, View view) {
+
             }
 
             @Override
             public boolean onItemLongClick(int position, View view) {
+
+                Order order = dataModel.orderArrayList.get(position);
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                alert.setTitle(order.getClient().getName() != null ? "Pedido de: " + order.getClient().getName() : "Alterar pedido");
+                alert.setMessage("O que deseja fazer?");
+
+
+                alert.setPositiveButton("Editar", (dialog, whichButton) -> {
+                    Intent intent = new Intent(getContext(), NewOrderActivity.class);
+                    intent.putExtra("order", order);
+                    startActivity(intent);
+                });
+
+                alert.setNegativeButton("Remover", (dialog, whichButton) -> {
+                    order.setEnable(false);
+                    db.collection("orders").document(order.getFirestoreId())
+                            .set(order).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "Pedido removido.", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getActivity(), "Erro ao remover o pedido.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
+
+                alert.setNeutralButton("Cancelar", (dialog, whichButton) -> {
+
+                });
+
+                alert.show();
+
                 return true;
             }
         });
@@ -71,8 +106,11 @@ public class OrderFragment extends Fragment {
     }
 
 
+    //TODO: Filtro por data
     private void loadOrders(){
-        db.collection("orders").addSnapshotListener((value, error) -> {
+        db.collection("orders")
+                .whereEqualTo("enable",true)
+                .addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.w("loadOrders", "Listen failed.", error);
                 return;

@@ -1,6 +1,8 @@
 package com.mateusandreatta.gabriellasbrigadeiria.model;
 
-public class Client {
+import java.io.Serializable;
+
+public class Client implements Serializable {
     private String name;
     private String address;
     private String addressDetails;

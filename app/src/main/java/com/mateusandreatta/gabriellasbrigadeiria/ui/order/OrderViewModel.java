@@ -4,16 +4,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.Date;
+
 public class OrderViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private MutableLiveData<Date> mDate;
 
     public OrderViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("Tela de pedidos");
+        mDate = new MutableLiveData<>();
+        mDate.setValue(new Date());
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<Date> getSelectedDate() {
+        return mDate;
+    }
+
+    public void setDate(Date mDate) {
+        this.mDate.setValue(mDate);
     }
 }

@@ -69,6 +69,7 @@ public class NewOrderActivity extends AppCompatActivity {
         if(extras != null){
             orderEdit = (Order) getIntent().getSerializableExtra("order");
             edit = true;
+            getSupportActionBar().setTitle(getResources().getString(R.string.menu_edit_order));
             newOrderViewModel.setmEditOrder(orderEdit);
         }
 

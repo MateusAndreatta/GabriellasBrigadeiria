@@ -1,25 +1,31 @@
 package com.mateusandreatta.gabriellasbrigadeiria.ui.order;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.mateusandreatta.gabriellasbrigadeiria.DatePickerFragment;
 import com.mateusandreatta.gabriellasbrigadeiria.NewOrderActivity;
 import com.mateusandreatta.gabriellasbrigadeiria.OrderDataModel;
 import com.mateusandreatta.gabriellasbrigadeiria.OrdersArrayAdapter;
@@ -28,7 +34,13 @@ import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentOrderBindin
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class OrderFragment extends Fragment {
+
+    private static final String TAG = "TAG-OrderFragment";
 
     private OrderViewModel orderViewModel;
     private FragmentOrderBinding binding;
@@ -51,7 +63,12 @@ public class OrderFragment extends Fragment {
         dataModel = OrderDataModel.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        loadOrders();
+        loadOrders(new Date());
+        orderViewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> {
+            Log.i(TAG,"Update date");
+            binding.textViewDateFilter.setText(new SimpleDateFormat("dd/MM/yyyy").format(date));
+            loadOrders(date);
+        });
 
         recyclerView = binding.RecyclerViewOrders;
         adapter = new OrdersArrayAdapter();
@@ -102,14 +119,36 @@ public class OrderFragment extends Fragment {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        DialogFragment newFragment = new DatePickerFragment(orderViewModel);
+        binding.imageButtonCalendarSetDate.setOnClickListener(v -> {
+            newFragment.show(getParentFragmentManager(), "datePicker");
+        });
+
         return root;
     }
 
+    private void loadOrders(Date date){
 
-    //TODO: Filtro por data
-    private void loadOrders(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        Date startDate = cal.getTime();
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        Date endDate = cal.getTime();
+        
+        Log.i(TAG, startDate.toString());
+        Log.i(TAG, endDate.toString());
+
         db.collection("orders")
-                .whereEqualTo("enable",true)
+                .whereGreaterThanOrEqualTo("date", startDate)
+                .whereLessThanOrEqualTo("date", endDate)
                 .addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.w("loadOrders", "Listen failed.", error);
@@ -118,7 +157,8 @@ public class OrderFragment extends Fragment {
             dataModel.orderArrayList.clear();
             for (QueryDocumentSnapshot doc : value) {
                 Order order = doc.toObject(Order.class);
-                dataModel.orderArrayList.add(order);
+                if(order.isEnable())
+                    dataModel.orderArrayList.add(order);
             }
             adapter.notifyDataSetChanged();
         });

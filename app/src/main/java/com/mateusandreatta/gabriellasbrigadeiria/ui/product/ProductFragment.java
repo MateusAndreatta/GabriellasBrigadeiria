@@ -137,8 +137,19 @@ public class ProductFragment extends Fragment {
 
         });
 
-        alert.setNegativeButton("Cancelar", (dialog, whichButton) -> {
-            // what ever you want to do with No option.
+        alert.setNegativeButton("Deletar", (dialog, whichButton) -> {
+            db.collection("products").document(product.getFirestoreId())
+                    .delete().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getActivity(), "Produto deletado com sucesso", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getActivity(), "Ocorreu um erro, tente novamente mais tarde.", Toast.LENGTH_SHORT).show();
+                        }
+            });
+        });
+
+        alert.setNeutralButton("Cancelar", (dialog, whichButton) -> {
+
         });
 
         alert.show();

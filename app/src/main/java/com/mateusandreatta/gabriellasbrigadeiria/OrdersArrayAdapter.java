@@ -56,7 +56,10 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
         holder.textViewStatus.setText(order.getStatus());
         holder.textViewClientName.setText(order.getClient().getName());
         holder.textViewDate.setText(simpleDateFormat.format(order.getDate()));
-        holder.textViewTime.setText(c.getString(R.string.item_view_time) + " " +  order.getDeliveryTime());
+        if(order.isDelivery())
+            holder.textViewTime.setText(c.getString(R.string.item_view_time_delivery) + " " +  order.getDeliveryTime());
+        else
+            holder.textViewTime.setText(c.getString(R.string.item_view_time) + " " +  order.getDeliveryTime());
         holder.textViewProducts.setText("Possui " + order.getProducts().size() + " Produtos");
         holder.textViewOrderPrice.setText(c.getString(R.string.item_view_order) + " " + Global.formatCurrencyDoubleValue(order.getTotal() - order.getDeliveryFee()));
         holder.textViewOrderDeliveryFee.setText(c.getString(R.string.item_view_delivery) + " " + Global.formatCurrencyDoubleValue(order.getDeliveryFee()));

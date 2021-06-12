@@ -48,7 +48,8 @@
     <!-- Tabs -->
     <string name="tab_text_1">Pedido</string>
     <string name="tab_text_2">Cliente</string>
-    <string name="item_view_time">Horário entrega/retirada: </string>
+    <string name="item_view_time">Horário retirada: </string>
+    <string name="item_view_time_delivery">Horário entrega: </string>
     <string name="item_view_total">Total: </string>
     <string name="item_view_delivery">Entrega: </string>
     <string name="item_view_order">Pedido: </string>

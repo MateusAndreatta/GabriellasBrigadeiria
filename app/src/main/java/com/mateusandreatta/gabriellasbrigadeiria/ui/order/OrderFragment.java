@@ -63,10 +63,11 @@ public class OrderFragment extends Fragment {
         dataModel = OrderDataModel.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        loadOrders(new Date());
         orderViewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> {
             Log.i(TAG,"Update date");
-            binding.textViewDateFilter.setText(new SimpleDateFormat("dd/MM/yyyy").format(date));
+            dataModel.orderArrayList.clear();
+            adapter.notifyDataSetChanged();
+            binding.progressBarOrders.setVisibility(View.VISIBLE);
             loadOrders(date);
         });
 
@@ -129,6 +130,8 @@ public class OrderFragment extends Fragment {
 
     private void loadOrders(Date date){
 
+        binding.progressBarOrders.setVisibility(View.VISIBLE);
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -145,7 +148,7 @@ public class OrderFragment extends Fragment {
         
         Log.i(TAG, startDate.toString());
         Log.i(TAG, endDate.toString());
-
+        binding.textViewDateFilter.setText(new SimpleDateFormat("dd/MM/yyyy").format(date));
         db.collection("orders")
                 .whereGreaterThanOrEqualTo("date", startDate)
                 .whereLessThanOrEqualTo("date", endDate)
@@ -161,11 +164,13 @@ public class OrderFragment extends Fragment {
                     dataModel.orderArrayList.add(order);
             }
             adapter.notifyDataSetChanged();
+
             updateUI();
         });
     }
 
     private void updateUI(){
+        binding.progressBarOrders.setVisibility(View.GONE);
         if(dataModel.orderArrayList.isEmpty()){
             binding.animationView.setVisibility(View.VISIBLE);
             binding.textViewNoOrdersFound.setVisibility(View.VISIBLE);

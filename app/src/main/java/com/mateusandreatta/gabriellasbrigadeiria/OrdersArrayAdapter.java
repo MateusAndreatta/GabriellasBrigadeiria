@@ -1,6 +1,7 @@
 package com.mateusandreatta.gabriellasbrigadeiria;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
 
 import java.text.SimpleDateFormat;
@@ -48,7 +50,7 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
     public void onBindViewHolder(@NonNull OrdersArrayAdapter.ViewHolder holder,
                                  int position) {
         Order order = OrderDataModel.getInstance().orderArrayList.get(position);
-
+        holder.order = order;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         Context c = holder.itemView.getContext();
@@ -70,6 +72,11 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
         }else{
             holder.imageViewOrderIcon.setImageResource(R.drawable.ic_item_card_order_local);
         }
+
+        if(order.getStatus().equals(Status.CONCLUIDO))
+            holder.textViewStatus.setTextColor(c.getColor(R.color.status_green));
+        else
+            holder.textViewStatus.setTextColor(c.getColor(R.color.status_orange));
     }
 
     @Override
@@ -79,6 +86,7 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        Order order;
         TextView textViewStatus;
         TextView textViewClientName;
         TextView textViewDate;

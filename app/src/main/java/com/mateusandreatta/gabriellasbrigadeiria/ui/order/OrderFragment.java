@@ -19,6 +19,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +31,7 @@ import com.mateusandreatta.gabriellasbrigadeiria.NewOrderActivity;
 import com.mateusandreatta.gabriellasbrigadeiria.OrderDataModel;
 import com.mateusandreatta.gabriellasbrigadeiria.OrdersArrayAdapter;
 import com.mateusandreatta.gabriellasbrigadeiria.R;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentOrderBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
@@ -125,6 +127,33 @@ public class OrderFragment extends Fragment {
             newFragment.show(getParentFragmentManager(), "datePicker");
         });
 
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper
+                .SimpleCallback(0, ItemTouchHelper.LEFT |
+                ItemTouchHelper.RIGHT) {
+                 @Override
+                 public boolean onMove(RecyclerView recyclerView,
+                                       RecyclerView.ViewHolder viewHolder,
+                                       RecyclerView.ViewHolder target) {
+                     Log.d(TAG,"onMove");
+                     return false;
+                 }
+
+                 @Override
+                 public void onSwiped(RecyclerView.ViewHolder viewHolder,
+                                      int direction) {
+
+                     int adapterPosition = viewHolder.getAdapterPosition();
+                     Order order = dataModel.orderArrayList.get(adapterPosition);
+
+                     if(order.getStatus().equals(Status.EM_ANDAMENTO))
+                        order.setStatus(Status.CONCLUIDO);
+                     else
+                         order.setStatus(Status.EM_ANDAMENTO);
+                     db.collection("orders").document(order.getFirestoreId()).set(order);
+                 }
+             });
+
+        helper.attachToRecyclerView(recyclerView);
         return root;
     }
 

@@ -161,7 +161,20 @@ public class OrderFragment extends Fragment {
                     dataModel.orderArrayList.add(order);
             }
             adapter.notifyDataSetChanged();
+            updateUI();
         });
+    }
+
+    private void updateUI(){
+        if(dataModel.orderArrayList.isEmpty()){
+            binding.animationView.setVisibility(View.VISIBLE);
+            binding.textViewNoOrdersFound.setVisibility(View.VISIBLE);
+            binding.RecyclerViewOrders.setVisibility(View.GONE);
+        }else{
+            binding.animationView.setVisibility(View.GONE);
+            binding.textViewNoOrdersFound.setVisibility(View.GONE);
+            binding.RecyclerViewOrders.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

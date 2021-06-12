@@ -1,40 +1,31 @@
 package com.mateusandreatta.gabriellasbrigadeiria.ui.order;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mateusandreatta.gabriellasbrigadeiria.DatePickerFragment;
 import com.mateusandreatta.gabriellasbrigadeiria.NewOrderActivity;
 import com.mateusandreatta.gabriellasbrigadeiria.OrderDataModel;
 import com.mateusandreatta.gabriellasbrigadeiria.OrdersArrayAdapter;
-import com.mateusandreatta.gabriellasbrigadeiria.R;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentOrderBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
-import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

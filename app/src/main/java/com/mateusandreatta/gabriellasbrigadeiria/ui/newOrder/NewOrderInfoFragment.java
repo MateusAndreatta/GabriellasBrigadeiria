@@ -16,10 +16,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mateusandreatta.gabriellasbrigadeiria.DatePickerFragment;
 import com.mateusandreatta.gabriellasbrigadeiria.R;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
@@ -69,6 +71,11 @@ public class NewOrderInfoFragment extends Fragment {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         dateInput.setText(simpleDateFormat.format(new Date()));
+
+        dateInput.setOnClickListener(v -> {
+            DialogFragment datePicker = new DatePickerFragment(dateInput);
+            datePicker.show(getParentFragmentManager(), "datePicker");
+        });
 
         return root;
     }

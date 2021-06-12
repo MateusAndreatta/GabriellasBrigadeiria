@@ -21,9 +21,14 @@ public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     private OrderViewModel viewModel;
+    private EditText editText;
 
     public DatePickerFragment(OrderViewModel viewModel) {
         this.viewModel = viewModel;
+    }
+
+    public DatePickerFragment(EditText editText) {
+        this.editText = editText;
     }
 
     @Override
@@ -41,6 +46,10 @@ public class DatePickerFragment extends DialogFragment
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day, 0, 0, 0);
-        viewModel.setDate(calendar.getTime());
+        if(viewModel != null)
+            viewModel.setDate(calendar.getTime());
+        if(editText != null){
+            editText.setText(new SimpleDateFormat("dd/MM/yyyy").format(calendar.getTime()));
+        }
     }
 }

@@ -12,7 +12,7 @@
         <activity
             android:name=".NewOrderActivity"
             android:label="@string/title_activity_new_order"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

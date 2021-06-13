@@ -23,6 +23,7 @@ import com.mateusandreatta.gabriellasbrigadeiria.DatePickerFragment;
 import com.mateusandreatta.gabriellasbrigadeiria.NewOrderActivity;
 import com.mateusandreatta.gabriellasbrigadeiria.OrderDataModel;
 import com.mateusandreatta.gabriellasbrigadeiria.OrdersArrayAdapter;
+import com.mateusandreatta.gabriellasbrigadeiria.R;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentOrderBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
@@ -71,7 +72,11 @@ public class OrderFragment extends Fragment {
         adapter.setClickListener(new OrdersArrayAdapter.ClickListener() {
             @Override
             public void onItemClick(int position, View view) {
-
+                View viewDetails = view.findViewById(R.id.DetailsLayout);
+                if(viewDetails.getVisibility() == View.VISIBLE)
+                    viewDetails.setVisibility(View.GONE);
+                else
+                    viewDetails.setVisibility(View.VISIBLE);
             }
 
             @Override

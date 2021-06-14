@@ -24,6 +24,7 @@ import com.mateusandreatta.gabriellasbrigadeiria.NewOrderActivity;
 import com.mateusandreatta.gabriellasbrigadeiria.OrderDataModel;
 import com.mateusandreatta.gabriellasbrigadeiria.OrdersArrayAdapter;
 import com.mateusandreatta.gabriellasbrigadeiria.R;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentOrderBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
@@ -200,10 +201,23 @@ public class OrderFragment extends Fragment {
             binding.animationView.setVisibility(View.VISIBLE);
             binding.textViewNoOrdersFound.setVisibility(View.VISIBLE);
             binding.RecyclerViewOrders.setVisibility(View.GONE);
+            binding.cardViewTotalValue.setVisibility(View.GONE);
         }else{
             binding.animationView.setVisibility(View.GONE);
             binding.textViewNoOrdersFound.setVisibility(View.GONE);
             binding.RecyclerViewOrders.setVisibility(View.VISIBLE);
+            binding.cardViewTotalValue.setVisibility(View.VISIBLE);
+
+            double totalProductsValue = 0d;
+            double totalDeliveryFee = 0d;
+
+            for (Order order : dataModel.orderArrayList) {
+                totalDeliveryFee += order.getDeliveryFee();
+                totalProductsValue += order.getTotal() - order.getDeliveryFee();
+            }
+            binding.textViewTotalProductsValue.setText(Global.formatCurrencyDoubleValue(totalProductsValue));
+            binding.textViewTotalDeliveryFeeValue.setText(Global.formatCurrencyDoubleValue(totalDeliveryFee));
+
         }
     }
 

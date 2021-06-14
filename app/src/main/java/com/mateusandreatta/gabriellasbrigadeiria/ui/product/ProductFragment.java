@@ -18,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mateusandreatta.gabriellasbrigadeiria.R;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.BrRealMoneyTextWatcher;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentProductBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
 
@@ -80,7 +82,7 @@ public class ProductFragment extends Fragment {
 
     private void updateListView(){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                getActivity(),
+                getContext(),
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
                 itens
@@ -93,13 +95,16 @@ public class ProductFragment extends Fragment {
         final View view = getLayoutInflater().inflate(R.layout.add_product_layout, null);
         EditText editTextProductName = (EditText) view.findViewById(R.id.editTextProductName);
         EditText editTextProductPrice = (EditText) view.findViewById(R.id.editTextDeliveryFee);
+
+        editTextProductPrice.addTextChangedListener(new BrRealMoneyTextWatcher(editTextProductPrice));
+
         alert.setTitle("Cadastrar produto");
         alert.setMessage("Insira o nome e o preço do produto");
 
         if(product != null){
             alert.setTitle("Editar produto");
             editTextProductName.setText(product.getName());
-            editTextProductPrice.setText(product.getPrice().toString());
+            editTextProductPrice.setText(Global.formatCurrencyDoubleValue(product.getPrice()));
         }
 
         alert.setView(view);
@@ -107,7 +112,7 @@ public class ProductFragment extends Fragment {
         alert.setPositiveButton("Salvar", (dialog, whichButton) -> {
 
             String productName = editTextProductName.getText().toString();
-            Double productPrice = Double.valueOf(editTextProductPrice.getText().toString());
+            Double productPrice = Global.getDoubleValueFromMaskedEditText(editTextProductPrice.getText().toString());
             if( product == null){
                 //Add new product
                 Product product1 = new Product(productName,productPrice);
@@ -130,8 +135,6 @@ public class ProductFragment extends Fragment {
                         .set(product).addOnCompleteListener(task ->
                         Toast.makeText(getActivity(), "Produto editado com sucesso", Toast.LENGTH_SHORT).show());
             }
-
-
 
         });
 

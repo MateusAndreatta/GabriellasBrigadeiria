@@ -6,9 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -18,11 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mateusandreatta.gabriellasbrigadeiria.DatePickerFragment;
 import com.mateusandreatta.gabriellasbrigadeiria.R;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.BrRealMoneyTextWatcher;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
@@ -112,8 +110,10 @@ public class NewOrderInfoFragment extends Fragment {
         EditText editTextProductName = (EditText) view.findViewById(R.id.editTextProductName);
         EditText editTextProductPrice = (EditText) view.findViewById(R.id.editTextDeliveryFee);
 
+        editTextProductPrice.addTextChangedListener(new BrRealMoneyTextWatcher(editTextProductPrice));
+
         editTextProductName.setText(product.getName());
-        editTextProductPrice.setText(String.valueOf(product.getPrice()));
+        editTextProductPrice.setText(Global.formatCurrencyDoubleValue(product.getPrice()));
 
         alert.setTitle("Alterar produto");
         alert.setMessage("Insira o nome e o preço do produto");
@@ -123,7 +123,7 @@ public class NewOrderInfoFragment extends Fragment {
         alert.setPositiveButton("Salvar", (dialog, whichButton) -> {
 
             String productName = editTextProductName.getText().toString();
-            Double productPrice = Double.valueOf(editTextProductPrice.getText().toString());
+            Double productPrice = Global.getDoubleValueFromMaskedEditText(editTextProductPrice.getText().toString());
 
             listViewAdapter.remove(product);
             listViewAdapter.add(new Product(productName, productPrice));

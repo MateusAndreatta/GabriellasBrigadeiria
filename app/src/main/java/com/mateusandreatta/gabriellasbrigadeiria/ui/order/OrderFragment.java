@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -28,6 +29,8 @@ import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentOrderBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,6 +54,13 @@ public class OrderFragment extends Fragment {
 
         binding = FragmentOrderBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         binding.floatingActionButtonAddOrder.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), NewOrderActivity.class));
@@ -127,31 +137,30 @@ public class OrderFragment extends Fragment {
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper
                 .SimpleCallback(0, ItemTouchHelper.LEFT |
                 ItemTouchHelper.RIGHT) {
-                 @Override
-                 public boolean onMove(RecyclerView recyclerView,
-                                       RecyclerView.ViewHolder viewHolder,
-                                       RecyclerView.ViewHolder target) {
-                     Log.d(TAG,"onMove");
-                     return false;
-                 }
+            @Override
+            public boolean onMove(RecyclerView recyclerView,
+                                  RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+                Log.d(TAG,"onMove");
+                return false;
+            }
 
-                 @Override
-                 public void onSwiped(RecyclerView.ViewHolder viewHolder,
-                                      int direction) {
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder,
+                                 int direction) {
 
-                     int adapterPosition = viewHolder.getAdapterPosition();
-                     Order order = dataModel.orderArrayList.get(adapterPosition);
+                int adapterPosition = viewHolder.getAdapterPosition();
+                Order order = dataModel.orderArrayList.get(adapterPosition);
 
-                     if(order.getStatus().equals(Status.EM_ANDAMENTO))
-                        order.setStatus(Status.CONCLUIDO);
-                     else
-                         order.setStatus(Status.EM_ANDAMENTO);
-                     db.collection("orders").document(order.getFirestoreId()).set(order);
-                 }
-             });
+                if(order.getStatus().equals(Status.EM_ANDAMENTO))
+                    order.setStatus(Status.CONCLUIDO);
+                else
+                    order.setStatus(Status.EM_ANDAMENTO);
+                db.collection("orders").document(order.getFirestoreId()).set(order);
+            }
+        });
 
         helper.attachToRecyclerView(recyclerView);
-        return root;
     }
 
     private void loadOrders(Date date){

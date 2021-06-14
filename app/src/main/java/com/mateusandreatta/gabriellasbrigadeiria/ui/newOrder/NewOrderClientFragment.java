@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mateusandreatta.gabriellasbrigadeiria.NewOrderActivity;
 import com.mateusandreatta.gabriellasbrigadeiria.R;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.BrRealMoneyTextWatcher;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Client;
@@ -43,13 +44,10 @@ public class NewOrderClientFragment extends Fragment {
         EditText address = root.findViewById(R.id.editTextClientAddress);
         EditText addressDetails = root.findViewById(R.id.editTextClientAddressDetails);
         EditText deliveryFee = root.findViewById(R.id.editTextDeliveryFee);
+        deliveryFee.addTextChangedListener(new BrRealMoneyTextWatcher(deliveryFee));
 
         CheckBox checkbox = root.findViewById(R.id.checkBox);
         checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//                address.setEnabled(!isChecked);
-//                addressDetails.setEnabled(!isChecked);
-//                deliveryFee.setEnabled(!isChecked);
-
             if(isChecked){
                 address.setVisibility(View.GONE);
                 addressDetails.setVisibility(View.GONE);
@@ -59,7 +57,6 @@ public class NewOrderClientFragment extends Fragment {
                 addressDetails.setVisibility(View.VISIBLE);
                 deliveryFee.setVisibility(View.VISIBLE);
             }
-
         });
         return root;
     }

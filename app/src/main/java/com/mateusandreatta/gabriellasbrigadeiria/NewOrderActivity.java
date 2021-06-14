@@ -190,14 +190,9 @@ public class NewOrderActivity extends AppCompatActivity {
             throw new Exception("Não é possivel criar um pedido, sem nenhum produto!");
         }
 
-        Double deliveryFeeValue = 0d;
+        double deliveryFeeValue = 0d;
         if(!deliveryFee.getText().toString().isEmpty()){
-            String s = deliveryFee.getText().toString();
-            if(s.contains("R$ ")){
-                s = s.replace("R$ ", "");
-                s = s.replace(",",".");
-            }
-            deliveryFeeValue = Double.valueOf(s);
+            deliveryFeeValue = Global.getDoubleValueFromMaskedEditText(deliveryFee.getText().toString());
         }
 
         if(orderDate.getText().toString().isEmpty()){
@@ -245,6 +240,5 @@ public class NewOrderActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         finish();
-        return;
     }
 }

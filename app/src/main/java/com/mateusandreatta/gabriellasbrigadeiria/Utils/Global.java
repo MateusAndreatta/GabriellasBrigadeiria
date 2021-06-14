@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.mateusandreatta.gabriellasbrigadeiria.R;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class Global {
 
     public static String translateFirebaseException(Context c, String msg){
@@ -25,19 +28,17 @@ public class Global {
     }
 
     public static String formatCurrencyDoubleValue(Double price){
-        String priceString = String.valueOf(price);
-        priceString = priceString.replace(".", ",");
-        String[] split = priceString.split(",");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+        return numberFormat.format(price);
+    }
 
-        if(split.length > 0){
-            if(split[1].length() == 1){
-                priceString += "0";
-            }
-            if(split[1].length() > 2){
-                priceString = split[0] + ","+ split[1].substring(0,2);
-            }
-        }
-        return "R$ " + priceString;
+    public static Double getDoubleValueFromMaskedEditText(String s){
+        String clean = s.replace(" ", "");
+        clean = clean.replace(" ", "");
+        clean = clean.replace("R$", "");
+        clean = clean.replace(".","");
+        clean = clean.replace(",", ".");
+        return Double.parseDouble(clean);
     }
 
 }

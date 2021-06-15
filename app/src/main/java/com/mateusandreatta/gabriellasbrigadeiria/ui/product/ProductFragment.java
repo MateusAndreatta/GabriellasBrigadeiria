@@ -1,5 +1,6 @@
 package com.mateusandreatta.gabriellasbrigadeiria.ui.product;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +24,8 @@ import com.mateusandreatta.gabriellasbrigadeiria.Utils.BrRealMoneyTextWatcher;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.FragmentProductBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -52,7 +56,6 @@ public class ProductFragment extends Fragment {
             showDialog(product);
         });
 
-        loadProducts();
 
         binding.floatingActionButtonAddProduct.setOnClickListener(v -> {
             showDialog(null);
@@ -61,7 +64,14 @@ public class ProductFragment extends Fragment {
         return root;
     }
 
-    private void loadProducts(){
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        loadProducts(view.getContext());
+    }
+
+    private void loadProducts(Context c){
         db.collection("products").addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.w(TAG, "Listen failed.", error);
@@ -76,13 +86,13 @@ public class ProductFragment extends Fragment {
                     products.add(product);
                 }
             }
-            updateListView();
+            updateListView(c);
         });
     }
 
-    private void updateListView(){
+    private void updateListView(Context c){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                getContext(),
+                c,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
                 itens

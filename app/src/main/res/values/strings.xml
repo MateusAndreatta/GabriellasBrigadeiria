@@ -32,6 +32,7 @@
     <string name="menu_statistics">Estatisticas</string>
     <string name="menu_profile">Meu Perfil</string>
     <string name="menu_delivery">Entregas</string>
+    <string name="menu_edit_order">Editar pedido</string>
 
     <!-- Toasts -->
     <string name="toast_info_saved_success">Informações salvas com sucesso!</string>
@@ -48,11 +49,13 @@
     <!-- Tabs -->
     <string name="tab_text_1">Pedido</string>
     <string name="tab_text_2">Cliente</string>
+
     <string name="item_view_time">Horário retirada: </string>
     <string name="item_view_time_delivery">Horário entrega: </string>
     <string name="item_view_total">Total: </string>
     <string name="item_view_delivery">Entrega: </string>
     <string name="item_view_order">Pedido: </string>
-    <string name="menu_edit_order">Editar pedido</string>
+
     <string name="item_view_details">Observações: </string>
+    <string name="app_version_prefix">Versão: </string>
 </resources>

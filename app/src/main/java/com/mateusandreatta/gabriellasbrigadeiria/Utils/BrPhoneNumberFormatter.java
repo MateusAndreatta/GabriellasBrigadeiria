@@ -39,7 +39,7 @@ public class BrPhoneNumberFormatter implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence s, int start, int before,
                               int count) {
-        // TODO: Do nothing
+
     }
 
     @Override

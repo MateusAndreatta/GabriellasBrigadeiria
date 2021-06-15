@@ -112,7 +112,6 @@ public class OrderFragment extends Fragment {
                 alert.setTitle(order.getClient().getName() != null ? "Pedido de: " + order.getClient().getName() : "Alterar pedido");
                 alert.setMessage("O que deseja fazer?");
 
-
                 alert.setPositiveButton("Editar", (dialog, whichButton) -> {
                     Intent intent = new Intent(getContext(), NewOrderActivity.class);
                     intent.putExtra("order", order);
@@ -154,7 +153,6 @@ public class OrderFragment extends Fragment {
             public boolean onMove(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
-                Log.d(TAG,"onMove");
                 return false;
             }
 

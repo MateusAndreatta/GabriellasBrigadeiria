@@ -100,8 +100,12 @@ public class NewOrderInfoFragment extends Fragment {
     }
 
     private void addProduct(){
-        Product p = (Product) spinner.getSelectedItem();
-        listViewAdapter.add(p);
+        if(spinner.getSelectedItem() != null){
+            Product p = (Product) spinner.getSelectedItem();
+            listViewAdapter.add(p);
+        }else{
+            Toast.makeText(getActivity(), "Não há produtos cadastrados", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showDialog(Product product, int i){

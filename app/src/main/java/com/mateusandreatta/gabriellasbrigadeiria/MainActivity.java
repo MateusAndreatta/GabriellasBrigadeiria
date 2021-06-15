@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        TextView textViewFooter = binding.getRoot().findViewById(R.id.footer_item_app_version);
+        textViewFooter.setText(getString(R.string.app_version_prefix) + BuildConfig.VERSION_NAME);
     }
 
     @Override
@@ -111,8 +114,7 @@ public class MainActivity extends AppCompatActivity {
             if(firebaseUser.getPhotoUrl() != null){
                 ImageView imageView = (ImageView) binding.navView.getHeaderView(0).findViewById(R.id.imageView);
                 Picasso.get().load(firebaseUser.getPhotoUrl()).transform(new CircleTransform()).placeholder(R.mipmap.ic_launcher_round).error(R.mipmap.ic_launcher_round).into(imageView);
-//            Picasso.get().load(firebaseUser.getPhotoUrl()).transform(new RoundedCornersTransformation(150,50, RoundedCornersTransformation.CornerType.ALL)).placeholder(R.mipmap.ic_launcher_round).error(R.mipmap.ic_launcher_round).into(imageView);
-                Log.i("TAG-MainActivity", "Photo changed");
+               Log.i("TAG-MainActivity", "Photo changed");
             }
         }
     }

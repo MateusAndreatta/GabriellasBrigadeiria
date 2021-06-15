@@ -6,11 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mateusandreatta.gabriellasbrigadeiria.DatePickerFragment;
@@ -46,16 +50,18 @@ public class OrderFragment extends Fragment {
     private OrdersArrayAdapter adapter;
     private FirebaseFirestore db;
     private OrderDataModel dataModel;
+    private ProgressBar loading;
+    private LottieAnimationView animationView;
+    private TextView textViewNoOrdersFound, textViewTotalProductsValue, textViewTotalDeliveryFeeValue;
+    private CardView cardViewTotalValue;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        orderViewModel =
-                new ViewModelProvider(this).get(OrderViewModel.class);
+        orderViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
 
         binding = FragmentOrderBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -72,11 +78,18 @@ public class OrderFragment extends Fragment {
             Log.i(TAG,"Update date");
             dataModel.orderArrayList.clear();
             adapter.notifyDataSetChanged();
-            binding.progressBarOrders.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.VISIBLE);
             loadOrders(date);
         });
 
+        loading = binding.progressBarOrders;
+        animationView = binding.animationView;
         recyclerView = binding.RecyclerViewOrders;
+        textViewNoOrdersFound = binding.textViewNoOrdersFound;
+        cardViewTotalValue = binding.cardViewTotalValue;
+        textViewTotalProductsValue = binding.textViewTotalProductsValue;
+        textViewTotalDeliveryFeeValue = binding.textViewTotalDeliveryFeeValue;
+
         adapter = new OrdersArrayAdapter();
         recyclerView.setAdapter(adapter);
 
@@ -95,7 +108,7 @@ public class OrderFragment extends Fragment {
 
                 Order order = dataModel.orderArrayList.get(position);
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                AlertDialog.Builder alert = new AlertDialog.Builder(requireContext());
                 alert.setTitle(order.getClient().getName() != null ? "Pedido de: " + order.getClient().getName() : "Alterar pedido");
                 alert.setMessage("O que deseja fazer?");
 
@@ -165,7 +178,7 @@ public class OrderFragment extends Fragment {
 
     private void loadOrders(Date date){
 
-        binding.progressBarOrders.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.VISIBLE);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -205,17 +218,17 @@ public class OrderFragment extends Fragment {
     }
 
     private void updateUI(){
-        binding.progressBarOrders.setVisibility(View.GONE);
+        loading.setVisibility(View.GONE);
         if(dataModel.orderArrayList.isEmpty()){
-            binding.animationView.setVisibility(View.VISIBLE);
-            binding.textViewNoOrdersFound.setVisibility(View.VISIBLE);
-            binding.RecyclerViewOrders.setVisibility(View.GONE);
-            binding.cardViewTotalValue.setVisibility(View.GONE);
+            animationView.setVisibility(View.VISIBLE);
+            textViewNoOrdersFound.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            cardViewTotalValue.setVisibility(View.GONE);
         }else{
-            binding.animationView.setVisibility(View.GONE);
-            binding.textViewNoOrdersFound.setVisibility(View.GONE);
-            binding.RecyclerViewOrders.setVisibility(View.VISIBLE);
-            binding.cardViewTotalValue.setVisibility(View.VISIBLE);
+            animationView.setVisibility(View.GONE);
+            textViewNoOrdersFound.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            cardViewTotalValue.setVisibility(View.VISIBLE);
 
             double totalProductsValue = 0d;
             double totalDeliveryFee = 0d;
@@ -224,8 +237,8 @@ public class OrderFragment extends Fragment {
                 totalDeliveryFee += order.getDeliveryFee();
                 totalProductsValue += order.getTotal() - order.getDeliveryFee();
             }
-            binding.textViewTotalProductsValue.setText(Global.formatCurrencyDoubleValue(totalProductsValue));
-            binding.textViewTotalDeliveryFeeValue.setText(Global.formatCurrencyDoubleValue(totalDeliveryFee));
+            textViewTotalProductsValue.setText(Global.formatCurrencyDoubleValue(totalProductsValue));
+            textViewTotalDeliveryFeeValue.setText(Global.formatCurrencyDoubleValue(totalDeliveryFee));
 
         }
     }

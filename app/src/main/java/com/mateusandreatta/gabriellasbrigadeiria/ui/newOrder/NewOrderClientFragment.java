@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mateusandreatta.gabriellasbrigadeiria.NewOrderActivity;
 import com.mateusandreatta.gabriellasbrigadeiria.R;
+import com.mateusandreatta.gabriellasbrigadeiria.Utils.BrPhoneNumberFormatter;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.BrRealMoneyTextWatcher;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
@@ -26,6 +27,7 @@ import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 
 public class NewOrderClientFragment extends Fragment {
@@ -41,10 +43,12 @@ public class NewOrderClientFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_new_order_tab_client, container, false);
         newOrderViewModel = new ViewModelProvider(requireActivity()).get(NewOrderViewModel.class);
 
+        EditText phone = root.findViewById(R.id.editTextClientPhone);
         EditText address = root.findViewById(R.id.editTextClientAddress);
         EditText addressDetails = root.findViewById(R.id.editTextClientAddressDetails);
         EditText deliveryFee = root.findViewById(R.id.editTextDeliveryFee);
         deliveryFee.addTextChangedListener(new BrRealMoneyTextWatcher(deliveryFee));
+        phone.addTextChangedListener(new BrPhoneNumberFormatter(new WeakReference<>(phone)));
 
         CheckBox checkbox = root.findViewById(R.id.checkBox);
         checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {

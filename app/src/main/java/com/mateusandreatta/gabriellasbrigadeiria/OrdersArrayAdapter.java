@@ -82,6 +82,8 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
             holder.imageButtonWhatsapp.setVisibility(View.GONE);
         }else{
             holder.textViewClientPhone.setText(order.getClient().getPhone());
+            holder.textViewClientPhone.setVisibility(View.VISIBLE);
+            holder.imageButtonWhatsapp.setVisibility(View.VISIBLE);
         }
 
         if(order.isDelivery()){
@@ -89,6 +91,11 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
             holder.imageViewOrderIcon.setImageResource(R.drawable.ic_item_card_order_delivery);
             holder.textViewClientAddress.setText(order.getClient().getAddress());
             holder.textViewClientAddressDetails.setText(order.getClient().getAddressDetails());
+
+            holder.textViewClientAddress.setVisibility(View.VISIBLE);
+            holder.textViewClientAddressDetails.setVisibility(View.VISIBLE);
+            holder.imageButtonMaps.setVisibility(View.VISIBLE);
+
         }else{
             holder.textViewTime.setText(c.getString(R.string.item_view_time) + " " +  order.getDeliveryTime());
             holder.imageViewOrderIcon.setImageResource(R.drawable.ic_item_card_order_local);
@@ -178,6 +185,10 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
     }
 
     private static String getWhatsAppLink(String number){
+        number = number.replace("(", "");
+        number = number.replace(")", "");
+        number = number.replace("-", "");
+        number = number.replace(" ", "");
         return "https://api.whatsapp.com/send?phone=55" + number;
     }
 
@@ -202,6 +213,8 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         StringBuilder sb = new StringBuilder();
+        String type = o.isDelivery() ? "ENTREGA" : "RETIRADA";
+        sb.append("[").append(type).append("] ");
         sb.append(simpleDateFormat.format(o.getDate())).append(" - ").append(o.getDeliveryTime());
         sb.append("\n\n");
         sb.append(o.getClient().getName()).append("\n");
@@ -217,13 +230,17 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
         sb.append("\n");
         if(!o.getClient().getPhone().isEmpty()){
             sb.append("WhatsApp: ").append(o.getClient().getPhone()).append("\n");
-            sb.append(getWhatsAppLink(o.getClient().getPhone())).append("\n\n");
+            sb.append(getWhatsAppLink(o.getClient().getPhone()));
         }
 
         if(o.isDelivery()){
-            sb.append("Endereço: ").append(o.getClient().getAddress()).append("\n");
-            sb.append(o.getClient().getAddressDetails()).append("\n\n");
+            sb.append("\n\n").append("Endereço: ").append(o.getClient().getAddress()).append("\n");
+            sb.append(o.getClient().getAddressDetails()).append("\n");
             sb.append(getMapsLink(o.getClient().getAddress()));
+        }
+
+        if(!o.getDetails().isEmpty()){
+            sb.append("\n\n").append(c.getString(R.string.item_view_details)).append(" ").append(o.getDetails());
         }
 
         ClipboardManager clipboard = (ClipboardManager) c.getSystemService(Context.CLIPBOARD_SERVICE);

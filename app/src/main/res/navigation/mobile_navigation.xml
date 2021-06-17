@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_orders">
+    app:startDestination="@+id/nav_order">
 
     <fragment
-        android:id="@+id/nav_orders"
+        android:id="@+id/nav_order"
         android:name="com.mateusandreatta.gabriellasbrigadeiria.ui.order.OrderFragment"
         android:label="@string/menu_order"
         tools:layout="@layout/fragment_order" />
@@ -22,4 +22,10 @@
         android:name="com.mateusandreatta.gabriellasbrigadeiria.ui.product.ProductFragment"
         android:label="@string/menu_products"
         tools:layout="@layout/fragment_product" />
+
+    <fragment
+        android:id="@+id/nav_delivery"
+        android:name="com.mateusandreatta.gabriellasbrigadeiria.ui.delivery.DeliveryFragment"
+        android:label="@string/menu_delivery"
+        tools:layout="@layout/fragment_delivery" />
 </navigation>

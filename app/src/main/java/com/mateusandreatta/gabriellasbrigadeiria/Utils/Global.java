@@ -9,6 +9,8 @@ import java.util.Locale;
 
 public class Global {
 
+    public static String gabriellasBrigadeiriaAddress = "-25.512240092843843, -49.1847911890005";
+
     public static String translateFirebaseException(Context c, String msg){
 
         switch (msg) {

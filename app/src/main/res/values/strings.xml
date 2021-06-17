@@ -43,6 +43,7 @@
     <string name="toast_info_saved_success">Informações salvas com sucesso!</string>
     <string name="toast_info_saved_fail">Ocorreu um erro ao salvar as informações.</string>
     <string name="toast_erro_fill_all_inputs">Preencha todos os campos!</string>
+    <string name="toast_erro_maps">Ocorreu um erro ao iniciar o GPS!</string>
 
     <!-- Firebase Exceptions -->
     <string name="firebase_exception_email_badly_formattd">O e-mail informado não é válido</string>

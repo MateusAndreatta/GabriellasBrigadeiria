@@ -10,14 +10,18 @@
     <color name="pink_200_light">#ffc1e3</color>
     <color name="pink_200_dark">#bf5f82</color>
 
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="ic_launcher_background">#FFFFFFFF</color>
+
     <color name="status_orange">#FF9800</color>
     <color name="status_green">#2E8F04</color>
+
+    <!-- Gradient -->
+    <color name="nav_gradient_start">#ff77a9</color>
+    <color name="nav_gradient_center">#ec407a</color>
+    <color name="nav_gradient_end">#b4004e</color>
+
+    <!-- Card -->
+    <color name="card_background_selected">#eee</color>
 </resources>

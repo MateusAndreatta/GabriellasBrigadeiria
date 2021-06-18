@@ -18,6 +18,7 @@ public class Order implements Serializable {
     private Double deliveryFee;
     private Date date;
     private String deliveryTime;
+    private String paymentMethod;
     private boolean enable = true;
     private boolean delivery;
 
@@ -112,4 +113,11 @@ public class Order implements Serializable {
         this.delivery = delivery;
     }
 
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 }

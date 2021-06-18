@@ -4,27 +4,12 @@ import java.io.Serializable;
 
 public class Client implements Serializable {
     private String name;
+    private String neighborhood;
     private String address;
     private String addressDetails;
     private String phone;
 
     public Client() {
-    }
-
-    public Client(String name) {
-        this.name = name;
-    }
-
-    public Client(String name, String phone) {
-        this.name = name;
-        this.phone = phone;
-    }
-
-    public Client(String name, String address, String addressDetails, String phone) {
-        this.name = name;
-        this.address = address;
-        this.addressDetails = addressDetails;
-        this.phone = phone;
     }
 
     public String getName() {
@@ -57,5 +42,13 @@ public class Client implements Serializable {
 
     public void setAddressDetails(String addressDetails) {
         this.addressDetails = addressDetails;
+    }
+
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
     }
 }

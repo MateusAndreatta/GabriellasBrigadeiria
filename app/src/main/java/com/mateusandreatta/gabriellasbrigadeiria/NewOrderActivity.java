@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -156,11 +158,13 @@ public class NewOrderActivity extends AppCompatActivity {
         // Get client data
         EditText phone = binding.getRoot().findViewById(R.id.editTextClientPhone);
         EditText name = binding.getRoot().findViewById(R.id.editTextClientName);
+        AutoCompleteTextView neighborhood = binding.getRoot().findViewById(R.id.autoCompleteTextViewClientNeighborhood);
         EditText address = binding.getRoot().findViewById(R.id.editTextClientAddress);
         EditText addressDetails = binding.getRoot().findViewById(R.id.editTextClientAddressDetails);
 
         client.setPhone(phone.getText().toString());
         client.setName(name.getText().toString());
+        client.setNeighborhood(neighborhood.getText().toString());
         client.setAddress(address.getText().toString());
         client.setAddressDetails(addressDetails.getText().toString());
 
@@ -170,6 +174,7 @@ public class NewOrderActivity extends AppCompatActivity {
         EditText orderDate = binding.getRoot().findViewById(R.id.editTextOrderDate);
         EditText orderTime = binding.getRoot().findViewById(R.id.editTextOrderTime);
         EditText deliveryFee = binding.getRoot().findViewById(R.id.editTextDeliveryFee);
+        Spinner paymentMethod = binding.getRoot().findViewById(R.id.spinnerPaymentMethod);
         CheckBox checkboxDelivery = binding.getRoot().findViewById(R.id.checkBox);
         ListView listViewProducts = binding.getRoot().findViewById(R.id.listViewOrderProducts);
 
@@ -205,6 +210,7 @@ public class NewOrderActivity extends AppCompatActivity {
         order.setDeliveryTime(orderTime.getText().toString());
         order.setDetails(orderDetails.getText().toString());
         order.setProducts(productsInOrder);
+        order.setPaymentMethod(paymentMethod.getSelectedItem().toString());
 
         if(!delivery){
             deliveryFeeValue = 0d;

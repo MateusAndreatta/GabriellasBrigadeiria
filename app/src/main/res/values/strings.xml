@@ -12,6 +12,15 @@
     <string name="prompt_delivery_fee">Taxa de entrega</string>
     <string name="prompt_is_delivery">O cliente irá retirar no local</string>
 
+    <!-- Spinner -->
+    <string-array name="payment_method">
+        <item>Dinheiro</item>
+        <item>Débito</item>
+        <item>Crédito</item>
+        <item>Pix</item>
+        <item>Picpay</item>
+    </string-array>
+
     <!-- Actions/Buttons -->
     <string name="action_save">Salvar</string>
     <string name="action_sign_in">Entrar</string>
@@ -64,4 +73,6 @@
 
     <string name="item_view_details">Observações: </string>
     <string name="app_version_prefix">Versão: </string>
+    <string name="prompt_change">Troco</string>
+    <string name="prompt_neighborhood">Bairro</string>
 </resources>

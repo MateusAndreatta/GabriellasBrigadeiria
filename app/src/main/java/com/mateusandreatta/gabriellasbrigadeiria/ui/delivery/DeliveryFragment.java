@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mateusandreatta.gabriellasbrigadeiria.DatePickerFragment;
 import com.mateusandreatta.gabriellasbrigadeiria.DeliveryArrayAdapter;
@@ -220,6 +221,9 @@ public class DeliveryFragment extends Fragment {
         db.collection("orders")
                 .whereGreaterThanOrEqualTo("date", startDate)
                 .whereLessThanOrEqualTo("date", endDate)
+                .orderBy("date")
+                .orderBy("status", Query.Direction.DESCENDING)
+                .orderBy("deliveryTime")
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.w("loadOrders", "Listen failed.", error);

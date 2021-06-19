@@ -11,6 +11,8 @@
     <string name="prompt_address_details">Complemento</string>
     <string name="prompt_delivery_fee">Taxa de entrega</string>
     <string name="prompt_is_delivery">O cliente irá retirar no local</string>
+    <string name="prompt_change">Troco</string>
+    <string name="prompt_neighborhood">Bairro</string>
 
     <!-- Spinner -->
     <string-array name="payment_method">
@@ -73,6 +75,7 @@
 
     <string name="item_view_details">Observações: </string>
     <string name="app_version_prefix">Versão: </string>
-    <string name="prompt_change">Troco</string>
-    <string name="prompt_neighborhood">Bairro</string>
+
+    <string name="notification_title">Novo pedido adicionado!</string>
+    <string name="notification_body">Pedido adicionado para o dia :</string>
 </resources>

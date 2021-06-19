@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -15,15 +16,24 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.CircleTransform;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.ActivityMainBinding;
 import com.squareup.picasso.Picasso;
 
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
+
+    private final String TAG = "TAG-NewOrderActivity";
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -60,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
         TextView textViewFooter = binding.getRoot().findViewById(R.id.footer_item_app_version);
         textViewFooter.setText(getString(R.string.app_version_prefix) + BuildConfig.VERSION_NAME);
+
+        updateFCMToken();
     }
 
     @Override
@@ -113,6 +125,27 @@ public class MainActivity extends AppCompatActivity {
                Log.i("TAG-MainActivity", "Photo changed");
             }
         }
+    }
+
+    private void updateFCMToken() {
+
+        if (firebaseUser != null) {
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(@NonNull Task<String> task) {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+                    String token = task.getResult();
+                    Map<String, Object> objectHashMap = new HashMap<>();
+                    objectHashMap.put("token", token);
+
+                    db.collection("tokens").document(firebaseUser.getUid()).set(objectHashMap);
+                }
+            });
+        }
+
     }
 
 }

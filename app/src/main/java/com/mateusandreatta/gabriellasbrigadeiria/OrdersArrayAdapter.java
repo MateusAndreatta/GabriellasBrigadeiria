@@ -73,7 +73,7 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
 
         StringBuilder stringBuilder = new StringBuilder();
         for (Product product : order.getProducts()) {
-            stringBuilder.append(product.toString()).append("\n");
+            stringBuilder.append("\n").append(product.toString());
         }
         holder.textViewProductsList.setText(stringBuilder.toString());
 
@@ -89,7 +89,11 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
         if(order.isDelivery()){
             holder.textViewTime.setText(c.getString(R.string.item_view_time_delivery) + " " +  order.getDeliveryTime());
             holder.imageViewOrderIcon.setImageResource(R.drawable.ic_item_card_order_delivery);
-            holder.textViewClientAddress.setText(order.getClient().getAddress());
+            String address = "";
+            if(order.getClient().getNeighborhood() != null && !order.getClient().getNeighborhood().isEmpty())
+                address += order.getClient().getNeighborhood() + " - ";
+            address += order.getClient().getAddress();
+            holder.textViewClientAddress.setText(address);
             holder.textViewClientAddressDetails.setText(order.getClient().getAddressDetails());
 
             holder.textViewClientAddress.setVisibility(View.VISIBLE);

@@ -14,27 +14,42 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Global;
 import com.mateusandreatta.gabriellasbrigadeiria.Utils.Status;
 import com.mateusandreatta.gabriellasbrigadeiria.databinding.ActivityNewOrderBinding;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Client;
+import com.mateusandreatta.gabriellasbrigadeiria.model.FCMResponse;
+import com.mateusandreatta.gabriellasbrigadeiria.model.NotificationRequest;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Order;
 import com.mateusandreatta.gabriellasbrigadeiria.model.Product;
-import com.mateusandreatta.gabriellasbrigadeiria.ui.newOrder.NewOrderClientFragment;
-import com.mateusandreatta.gabriellasbrigadeiria.ui.newOrder.NewOrderInfoFragment;
+import com.mateusandreatta.gabriellasbrigadeiria.service.GoogleApiFcmService;
 import com.mateusandreatta.gabriellasbrigadeiria.ui.newOrder.NewOrderViewModel;
 import com.mateusandreatta.gabriellasbrigadeiria.ui.newOrder.SectionsPagerAdapter;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NewOrderActivity extends AppCompatActivity {
 
@@ -42,7 +57,10 @@ public class NewOrderActivity extends AppCompatActivity {
     private NewOrderViewModel newOrderViewModel;
 
     private ActivityNewOrderBinding binding;
-    private FirebaseFirestore db;
+    FirebaseUser firebaseUser;
+    FirebaseFirestore db;
+    FirebaseAuth firebaseAuth;
+
     private ArrayList<Product> products = new ArrayList<>();
     private boolean edit;
     private Order orderEdit;
@@ -75,7 +93,10 @@ public class NewOrderActivity extends AppCompatActivity {
             newOrderViewModel.setmEditOrder(orderEdit);
         }
 
+        firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
         loadProducts();
     }
 
@@ -116,6 +137,7 @@ public class NewOrderActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                             btn.setEnabled(true);
                             Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                            sendNewProductNotification(order.getDate());
                             Toast.makeText(this, "Pedido adicionado com sucesso", Toast.LENGTH_SHORT).show();
                             finish();
                         })
@@ -230,6 +252,57 @@ public class NewOrderActivity extends AppCompatActivity {
             order.setFirestoreId(orderEdit.getFirestoreId());
 
         return order;
+    }
+
+    private void sendNewProductNotification(Date orderDate){
+
+        db.collection("tokens").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    String orderDateString = simpleDateFormat.format(orderDate);
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("https://fcm.googleapis.com/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    GoogleApiFcmService googleApiFcmService = retrofit.create(GoogleApiFcmService.class);
+
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        if(!document.getId().equals(firebaseUser.getUid())){
+                            sendPostRequestNotification(googleApiFcmService,document.getData().get("token").toString(), orderDateString);
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    /*
+    O ideal seria ter um servidor backend para realizar os envios ou com o uso do firebase functions
+    e nao o proprio cliente realizar o envio.
+    Mas para manter o projeto sem custos de backend, o priprio cliente está realizando o envio das notificações via POST
+    */
+    private void sendPostRequestNotification(GoogleApiFcmService googleApiFcmService, String token, String orderDateString){
+        Log.d(TAG, "sendPostRequestNotification: " + token);
+
+        Call<FCMResponse> requestBodyCall = googleApiFcmService.sendNotification(new NotificationRequest(getString(R.string.notification_title), getString(R.string.notification_body) + orderDateString, token));
+
+        requestBodyCall.enqueue(new Callback<FCMResponse>() {
+            @Override
+            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                Log.d(TAG, "Notification resquestCode: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<FCMResponse> call, Throwable t) {
+                Log.d(TAG, "Notification onFailure: " + t.getMessage());
+            }
+        });
     }
 
     @Override

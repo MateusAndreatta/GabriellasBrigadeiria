@@ -13,6 +13,9 @@
     <string name="prompt_is_delivery">O cliente irá retirar no local</string>
     <string name="prompt_change">Troco</string>
     <string name="prompt_neighborhood">Bairro</string>
+    <string name="prompt_details">Observações</string>
+    <string name="prompt_time">Horário</string>
+    <string name="prompt_date">Data</string>
 
     <!-- Spinner -->
     <string-array name="payment_method">
@@ -29,6 +32,7 @@
     <string name="action_sign_up">Cadastrar</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_logout">Sair</string>
+    <string name="action_add">Adicionar</string>
 
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>

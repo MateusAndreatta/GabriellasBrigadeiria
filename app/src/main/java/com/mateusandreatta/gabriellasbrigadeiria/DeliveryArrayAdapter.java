@@ -65,19 +65,66 @@ public class DeliveryArrayAdapter extends RecyclerView.Adapter<DeliveryArrayAdap
         holder.textViewStatus.setText(order.getStatus());
         holder.textViewClientName.setText(order.getClient().getName());
         holder.textViewDate.setText(simpleDateFormat.format(order.getDate()));
-        holder.textViewProducts.setText("Possui " + order.getProducts().size() + " Produtos");
         holder.textViewOrderPrice.setText(c.getString(R.string.item_view_order) + " " + Global.formatCurrencyDoubleValue(order.getTotal() - order.getDeliveryFee()));
         holder.textViewOrderDeliveryFee.setText(c.getString(R.string.item_view_delivery) + " " + Global.formatCurrencyDoubleValue(order.getDeliveryFee()));
         holder.textViewOrderTotal.setText(c.getString(R.string.item_view_total) + " " + Global.formatCurrencyDoubleValue(order.getTotal()));
+        holder.textViewOrderDetails.setText(StringUtils.capitalize(order.getDetails()));
+
+        String payment = c.getString(R.string.item_view_payment_method);
+        if(order.getPaymentMethod() != null){
+            payment += " " + order.getPaymentMethod();
+        }
+        holder.textViewPaymentMethod.setText(payment);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Product product : order.getProducts()) {
+            stringBuilder.append("\n").append(product.toString());
+        }
+        holder.textViewProductsList.setText(stringBuilder.toString());
+
+        if(order.getClient().getPhone().isEmpty()){
+            holder.textViewClientPhone.setVisibility(View.GONE);
+            holder.imageButtonWhatsapp.setVisibility(View.GONE);
+        }else{
+            holder.textViewClientPhone.setText(order.getClient().getPhone());
+            holder.textViewClientPhone.setVisibility(View.VISIBLE);
+            holder.imageButtonWhatsapp.setVisibility(View.VISIBLE);
+        }
 
         if(order.isDelivery()){
             holder.textViewTime.setText(c.getString(R.string.item_view_time_delivery) + " " +  order.getDeliveryTime());
             holder.imageViewOrderIcon.setImageResource(R.drawable.ic_item_card_order_delivery);
+
+            if(order.getClient().getNeighborhood() != null && !order.getClient().getNeighborhood().isEmpty())
+                holder.textViewClientNeighborhood.setText(order.getClient().getNeighborhood());
+
+            holder.textViewClientAddress.setText(order.getClient().getAddress());
+            holder.textViewClientAddressDetails.setText(order.getClient().getAddressDetails());
+
+            holder.textViewClientAddress.setVisibility(View.VISIBLE);
+            holder.textViewClientAddressDetails.setVisibility(View.VISIBLE);
+            holder.imageButtonMaps.setVisibility(View.VISIBLE);
+
         }else{
             holder.textViewTime.setText(c.getString(R.string.item_view_time) + " " +  order.getDeliveryTime());
             holder.imageViewOrderIcon.setImageResource(R.drawable.ic_item_card_order_local);
+            holder.textViewClientAddress.setVisibility(View.GONE);
+            holder.textViewClientAddressDetails.setVisibility(View.GONE);
+            holder.imageButtonMaps.setVisibility(View.GONE);
         }
 
+        holder.imageButtonWhatsapp.setOnClickListener(v->{
+            openWhatsAppConversationUsingUri(c,order.getClient().getPhone());
+        });
+
+        holder.imageButtonCopyClipboard.setOnClickListener(v -> {
+            copyToClipboard(c,order);
+            Toast.makeText(c, "Pedido copiado para a área de transferência", Toast.LENGTH_SHORT).show();
+        });
+
+        holder.imageButtonMaps.setOnClickListener(v -> {
+            openMaps(c, order.getClient().getAddress());
+        });
 
         if(order.getStatus().equals(Status.CONCLUIDO))
             holder.textViewStatus.setTextColor(c.getColor(R.color.status_green));
@@ -97,11 +144,20 @@ public class DeliveryArrayAdapter extends RecyclerView.Adapter<DeliveryArrayAdap
         TextView textViewClientName;
         TextView textViewDate;
         TextView textViewTime;
-        TextView textViewProducts;
+        TextView textViewPaymentMethod;
         TextView textViewOrderPrice;
         TextView textViewOrderDeliveryFee;
         TextView textViewOrderTotal;
+        TextView textViewProductsList;
+        TextView textViewClientPhone;
+        TextView textViewClientAddress;
+        TextView textViewClientAddressDetails;
+        TextView textViewOrderDetails;
+        TextView textViewClientNeighborhood;
         ImageView imageViewOrderIcon;
+        ImageButton imageButtonMaps;
+        ImageButton imageButtonWhatsapp;
+        ImageButton imageButtonCopyClipboard;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -109,12 +165,20 @@ public class DeliveryArrayAdapter extends RecyclerView.Adapter<DeliveryArrayAdap
             textViewClientName = itemView.findViewById(R.id.textViewClientName);
             textViewDate = itemView.findViewById(R.id.textViewDate);
             textViewTime = itemView.findViewById(R.id.textViewTime);
-            textViewProducts = itemView.findViewById(R.id.textViewProducts);
+            textViewPaymentMethod = itemView.findViewById(R.id.textViewPaymentMethod);
             textViewOrderPrice = itemView.findViewById(R.id.textViewOrderPrice);
             textViewOrderDeliveryFee = itemView.findViewById(R.id.textViewOrderDeliveryFee);
             textViewOrderTotal = itemView.findViewById(R.id.textViewOrderTotal);
+            textViewProductsList = itemView.findViewById(R.id.textViewProductsList);
+            textViewClientPhone = itemView.findViewById(R.id.textViewClientPhone);
+            textViewClientAddress = itemView.findViewById(R.id.textViewClientAddress);
+            textViewClientAddressDetails = itemView.findViewById(R.id.textViewClientAddressDetails);
+            textViewOrderDetails = itemView.findViewById(R.id.textViewOrderDetails);
+            textViewClientNeighborhood = itemView.findViewById(R.id.textViewClientNeighborhood);
             imageViewOrderIcon = itemView.findViewById(R.id.imageViewOrderIcon);
-
+            imageButtonMaps = itemView.findViewById(R.id.imageButtonMaps);
+            imageButtonWhatsapp = itemView.findViewById(R.id.imageButtonWhatsapp);
+            imageButtonCopyClipboard = itemView.findViewById(R.id.imageButtonCopyClipboard);
 
             itemView.setOnClickListener(view -> {
                 if(clickListener == null)
@@ -173,6 +237,7 @@ public class DeliveryArrayAdapter extends RecyclerView.Adapter<DeliveryArrayAdap
         sb.append(c.getString(R.string.item_view_order)).append(" ").append(Global.formatCurrencyDoubleValue(o.getTotal() - o.getDeliveryFee())).append("\n");
         sb.append(c.getString(R.string.item_view_delivery)).append(" ").append(Global.formatCurrencyDoubleValue(o.getDeliveryFee())).append("\n");
         sb.append(c.getString(R.string.item_view_total)).append(" ").append(Global.formatCurrencyDoubleValue(o.getTotal())).append("\n");
+        sb.append(c.getString(R.string.item_view_payment_method)).append(" ").append(o.getPaymentMethod()).append("\n");
 
         sb.append("\n");
         if(!o.getClient().getPhone().isEmpty()){
@@ -181,7 +246,11 @@ public class DeliveryArrayAdapter extends RecyclerView.Adapter<DeliveryArrayAdap
         }
 
         if(o.isDelivery()){
-            sb.append("\n\n").append("Endereço: ").append(o.getClient().getAddress()).append("\n");
+            sb.append("\n\n").append("Endereço: ");
+            if(o.getClient().getNeighborhood() != null && !o.getClient().getNeighborhood().isEmpty()){
+                sb.append(o.getClient().getNeighborhood()).append(" - ");
+            }
+            sb.append(o.getClient().getAddress()).append("\n");
             sb.append(o.getClient().getAddressDetails()).append("\n");
             sb.append(getMapsLink(o.getClient().getAddress()));
         }

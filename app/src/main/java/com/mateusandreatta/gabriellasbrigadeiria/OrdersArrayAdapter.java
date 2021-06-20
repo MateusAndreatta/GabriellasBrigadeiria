@@ -65,11 +65,16 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
         holder.textViewStatus.setText(order.getStatus());
         holder.textViewClientName.setText(order.getClient().getName());
         holder.textViewDate.setText(simpleDateFormat.format(order.getDate()));
-        holder.textViewProducts.setText("Possui " + order.getProducts().size() + " Produtos");
         holder.textViewOrderPrice.setText(c.getString(R.string.item_view_order) + " " + Global.formatCurrencyDoubleValue(order.getTotal() - order.getDeliveryFee()));
         holder.textViewOrderDeliveryFee.setText(c.getString(R.string.item_view_delivery) + " " + Global.formatCurrencyDoubleValue(order.getDeliveryFee()));
         holder.textViewOrderTotal.setText(c.getString(R.string.item_view_total) + " " + Global.formatCurrencyDoubleValue(order.getTotal()));
         holder.textViewOrderDetails.setText(StringUtils.capitalize(order.getDetails()));
+
+        String payment = c.getString(R.string.item_view_payment_method);
+        if(order.getPaymentMethod() != null){
+            payment += " " + order.getPaymentMethod();
+        }
+        holder.textViewPaymentMethod.setText(payment);
 
         StringBuilder stringBuilder = new StringBuilder();
         for (Product product : order.getProducts()) {
@@ -139,7 +144,7 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
         TextView textViewClientName;
         TextView textViewDate;
         TextView textViewTime;
-        TextView textViewProducts;
+        TextView textViewPaymentMethod;
         TextView textViewOrderPrice;
         TextView textViewOrderDeliveryFee;
         TextView textViewOrderTotal;
@@ -159,7 +164,7 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
             textViewClientName = itemView.findViewById(R.id.textViewClientName);
             textViewDate = itemView.findViewById(R.id.textViewDate);
             textViewTime = itemView.findViewById(R.id.textViewTime);
-            textViewProducts = itemView.findViewById(R.id.textViewProducts);
+            textViewPaymentMethod = itemView.findViewById(R.id.textViewPaymentMethod);
             textViewOrderPrice = itemView.findViewById(R.id.textViewOrderPrice);
             textViewOrderDeliveryFee = itemView.findViewById(R.id.textViewOrderDeliveryFee);
             textViewOrderTotal = itemView.findViewById(R.id.textViewOrderTotal);
@@ -230,6 +235,7 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
         sb.append(c.getString(R.string.item_view_order)).append(" ").append(Global.formatCurrencyDoubleValue(o.getTotal() - o.getDeliveryFee())).append("\n");
         sb.append(c.getString(R.string.item_view_delivery)).append(" ").append(Global.formatCurrencyDoubleValue(o.getDeliveryFee())).append("\n");
         sb.append(c.getString(R.string.item_view_total)).append(" ").append(Global.formatCurrencyDoubleValue(o.getTotal())).append("\n");
+        sb.append(c.getString(R.string.item_view_payment_method)).append(" ").append(o.getPaymentMethod()).append("\n");
 
         sb.append("\n");
         if(!o.getClient().getPhone().isEmpty()){
@@ -238,7 +244,11 @@ public class OrdersArrayAdapter extends RecyclerView.Adapter<OrdersArrayAdapter.
         }
 
         if(o.isDelivery()){
-            sb.append("\n\n").append("Endereço: ").append(o.getClient().getAddress()).append("\n");
+            sb.append("\n\n").append("Endereço: ");
+            if(o.getClient().getNeighborhood() != null && !o.getClient().getNeighborhood().isEmpty()){
+                sb.append(o.getClient().getNeighborhood()).append(" - ");
+            }
+            sb.append(o.getClient().getAddress()).append("\n");
             sb.append(o.getClient().getAddressDetails()).append("\n");
             sb.append(getMapsLink(o.getClient().getAddress()));
         }

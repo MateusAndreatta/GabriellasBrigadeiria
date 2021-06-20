@@ -290,7 +290,7 @@ public class NewOrderActivity extends AppCompatActivity {
     private void sendPostRequestNotification(GoogleApiFcmService googleApiFcmService, String token, String orderDateString){
         Log.d(TAG, "sendPostRequestNotification: " + token);
 
-        Call<FCMResponse> requestBodyCall = googleApiFcmService.sendNotification(new NotificationRequest(getString(R.string.notification_title), getString(R.string.notification_body) + orderDateString, token));
+        Call<FCMResponse> requestBodyCall = googleApiFcmService.sendNotification(new NotificationRequest(getString(R.string.notification_title), getString(R.string.notification_body) + " " + orderDateString, token));
 
         requestBodyCall.enqueue(new Callback<FCMResponse>() {
             @Override

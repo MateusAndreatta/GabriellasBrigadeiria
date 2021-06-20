@@ -112,6 +112,18 @@ public class DeliveryFragment extends Fragment {
         adapter.setClickListener(new DeliveryArrayAdapter.ClickListener() {
             @Override
             public void onItemClick(int position, View view) {
+
+                View viewDetails = view.findViewById(R.id.DetailsLayout);
+                if(viewDetails.getVisibility() == View.VISIBLE)
+                    viewDetails.setVisibility(View.GONE);
+                else
+                    viewDetails.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public boolean onItemLongClick(int position, View view) {
+
                 CardView viewCard = (CardView) view.findViewById(R.id.cardViewDelivery);
                 Order order = dataModel.orderArrayList.get(position);
                 ColorStateList cardBackgroundColor = viewCard.getCardBackgroundColor();
@@ -122,41 +134,6 @@ public class DeliveryFragment extends Fragment {
                     viewCard.setCardBackgroundColor(getContext().getColor(R.color.card_background_selected));
                     ordersSelected.add(order);
                 }
-
-            }
-
-            @Override
-            public boolean onItemLongClick(int position, View view) {
-
-                Order order = dataModel.orderArrayList.get(position);
-
-                AlertDialog.Builder alert = new AlertDialog.Builder(requireContext());
-                alert.setTitle(order.getClient().getName() != null ? "Pedido de: " + order.getClient().getName() : "Alterar pedido");
-                alert.setMessage("O que deseja fazer?");
-
-                alert.setPositiveButton("Editar", (dialog, whichButton) -> {
-                    Intent intent = new Intent(getContext(), NewOrderActivity.class);
-                    intent.putExtra("order", order);
-                    startActivity(intent);
-                });
-
-                alert.setNegativeButton("Remover", (dialog, whichButton) -> {
-                    order.setEnable(false);
-                    db.collection("orders").document(order.getFirestoreId())
-                            .set(order).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Pedido removido.", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getActivity(), "Erro ao remover o pedido.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                });
-
-                alert.setNeutralButton("Cancelar", (dialog, whichButton) -> {
-
-                });
-
-                alert.show();
 
                 return true;
             }

@@ -76,10 +76,12 @@
     <string name="item_view_total">Total: </string>
     <string name="item_view_delivery">Entrega: </string>
     <string name="item_view_order">Pedido: </string>
+    <string name="item_view_payment_method">Método de pagamento:</string>
 
     <string name="item_view_details">Observações: </string>
     <string name="app_version_prefix">Versão: </string>
 
     <string name="notification_title">Novo pedido adicionado!</string>
-    <string name="notification_body">Pedido adicionado para o dia :</string>
+    <string name="notification_body">Pedido adicionado para o dia:</string>
+    <string name="item_view_date">Data</string>
 </resources>

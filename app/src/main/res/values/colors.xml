@@ -23,5 +23,5 @@
     <color name="nav_gradient_end">#b4004e</color>
 
     <!-- Card -->
-    <color name="card_background_selected">#eee</color>
+    <color name="card_background_selected">#CACACA</color>
 </resources>

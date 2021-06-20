@@ -36,6 +36,7 @@ The application will be used by the company Gabriella's Brigadeiria for order ma
   * Added Ordering by status and time to orders list
   * Added Neighborhood and Payment method fields in order register 
   * Added FCM (Firebase Cloud Messaging) for sending notifications when a new order is added.
+  * Fixed Layouts without scroll for small devices.
   * Updated libraries versions.
 
 ### Version: 1.1

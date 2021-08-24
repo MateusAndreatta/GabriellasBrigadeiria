@@ -6,7 +6,13 @@ The application will be used by the company Gabriella's Brigadeiria for order ma
 
 ![Logo](https://github.com/MateusAndreatta/GabriellasBrigadeiria/blob/master/app/src/main/res/drawable/logo.png)
 
-## 🐱‍🏍Features:
+# 🎬Preview
+
+ Status Pedido |Endereço e Contato|
+:-------------------------:|:-------------------------:
+![](https://github.com/MateusAndreatta/GabriellasBrigadeiria/blob/master/preview/gif1.gif)  |  ![](https://github.com/MateusAndreatta/GabriellasBrigadeiria/blob/master/preview/gif2.gif)
+
+## 🚀Features:
 
 * Login/Register with Firebase Auth
 * Edit profile name/photo
@@ -17,7 +23,7 @@ The application will be used by the company Gabriella's Brigadeiria for order ma
 * Crashlytics/Analytics with Firebase
 * Image storage with Firebase Storage
 
-## 📃 Libraries Used
+## 📃Libraries Used
 * ImagePicker [https://github.com/Dhaval2404/ImagePicker]
 * Picasso [https://github.com/square/picasso]
 * Lottie [https://github.com/airbnb/lottie-android]
